@@ -79,14 +79,13 @@ $produtorepository->showMessage();
                             data-bs-target="#exampleCentralModal1">
                         Deletar
                     </button>
-
                     <div class="modal fade" id="exampleCentralModal1" tabindex="-1" aria-labelledby="exampleModalLabel"
                          aria-hidden="true">
                         <div class="modal-dialog modal-sm">
                             <div class="modal-content text-center">
                                 <div class="modal-header bg-danger text-white d-flex justify-content-center">
                                     <h5 class="modal-title" id="exampleModalLabel" style="font-size: 1.8rem;">Deletar
-                                        produto</h5>
+                                        Produto</h5>
                                 </div>
                                 <div class="modal-body">
                                     <i class="fas fa-times fa-3x text-danger"></i>
@@ -100,7 +99,6 @@ $produtorepository->showMessage();
                             </div>
                         </div>
                     </div>
-
 
                 </td>
             </tr>
