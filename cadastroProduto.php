@@ -16,16 +16,13 @@ include_once 'setup.php';
 <body>
 <?php include_once 'view/Navbar.html'; ?>
 <form action='http://localhost/cadastro-produtos/prod/cadastro' method='post'>
-    <div class="col">
-        <label for="nome">Cadastre o seu produto:</label>
-        <br>
-        <input name="nome" type="text" id="nome">
-        <input type="submit" value="Enviar">
-
+    <h5 style="padding: 10px;">Cadastre o Seu produto</h5>
+    <div class="input-group mb-3 " style="width: 25%; padding: 10px;">
+        <input name="nome" type="text" id="nome" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2" >
+        <input type="submit" class="btn btn-outline-secondary" id="button-addon2" value="Enviar">
     </div>
 </form>
 <br>
-<a href="http://localhost/cadastro-produtos/prod">Voltar</a>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>

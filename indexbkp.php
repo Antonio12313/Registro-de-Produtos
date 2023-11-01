@@ -75,31 +75,9 @@ $produtorepository->showMessage();
                        class="btn btn-outline-success" style="border-color: #739072;" tabindex="-1" role="button"
                        aria-disabled="true">Editar</a>
 
-                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                            data-bs-target="#exampleCentralModal1">
+                    <a href="http://localhost/cadastro-produtos/prod/delete/<?php echo $produto["id"]; ?>" type="button" class="btn btn-outline-danger btn-delete">
                         Deletar
-                    </button>
-                    <div class="modal fade" id="exampleCentralModal1" tabindex="-1" aria-labelledby="exampleModalLabel"
-                         aria-hidden="true">
-                        <div class="modal-dialog modal-sm">
-                            <div class="modal-content text-center">
-                                <div class="modal-header bg-danger text-white d-flex justify-content-center">
-                                    <h5 class="modal-title" id="exampleModalLabel" style="font-size: 1.8rem;">Deletar
-                                        Produto</h5>
-                                </div>
-                                <div class="modal-body">
-                                    <i class="fas fa-times fa-3x text-danger"></i>
-                                </div>
-                                <div class="modal-footer d-flex justify-content-center">
-                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Não</button>
-                                    <a href="http://localhost/cadastro-produtos/prod/delete/<?php echo $produto["id"]; ?>"
-                                       class="btn btn-outline-danger" tabindex="-1" role="button" aria-disabled="true"
-                                       data-bs="modal">Sim</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+                    </a>
                 </td>
             </tr>
 
@@ -121,6 +99,25 @@ $produtorepository->showMessage();
 <br>
 <br>
 <br>
+
+<div class="modal" id="exampleCentralModal1"  aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content text-center">
+            <div class="modal-header bg-danger text-white d-flex justify-content-center">
+                <h5 class="modal-title" id="exampleModalLabel" style="font-size: 1.8rem;">Deletar
+                    Produto</h5>
+            </div>
+            <div class="modal-body">
+                <i class="fas fa-times fa-3x text-danger"></i>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                <button type="button" id="btn-confirm-delete" class="btn btn-success" data-bs-dismiss="modal">Sim</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Não</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
@@ -138,5 +135,31 @@ $produtorepository->showMessage();
         type="text/javascript"
         src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"
 ></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(event) {
+        var buttons = document.getElementsByClassName('btn-delete');
+        for (var i=0; i < buttons.length; i++) {
+            buttons[i].onclick = function(element) {
+                element.preventDefault();
+                openDeleteConfirmationDialog(element.href);
+            }
+
+
+        };
+    });
+
+    function openDeleteConfirmationDialog(href) {
+        document.getElementById("btn-confirm-delete").onclick = function () {
+            window.location = ""
+            alert("dasdas");
+        };
+
+        var myModal = new bootstrap.Modal(document.getElementById('exampleCentralModal1'), {
+            keyboard: true
+        });
+        myModal.show();
+    }
+</script>
 
 </html>
