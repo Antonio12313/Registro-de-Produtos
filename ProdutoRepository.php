@@ -28,10 +28,10 @@ class ProdutoRepository
         $nomefiltro = $filtro['nome_filtro'] ?? [];
         $nomeuser = $filtro['nome_user'] ?? [];
         if (!empty($nomefiltro)) {
-            $sql .= " AND p.nome like '%$nomefiltro'";
+            $sql .= " AND p.nome like '%$nomefiltro%'";
         }
         if (!empty($nomeuser)) {
-            $sql .= " AND u.name like '%$nomeuser'";
+            $sql .= " AND u.name like '%$nomeuser%'";
         }
 
         $sql .= " LIMIT " . $offset . ' , ' . $total_records_per_page;

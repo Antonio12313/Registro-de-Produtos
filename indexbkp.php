@@ -9,14 +9,17 @@
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
-<?php include_once 'view/Navbar.html'; ?>
+<?php
+include_once 'view/Navbar.html';
+include_once 'controllers/ConfigSite.php';
+?>
 <br>
-<form class="row g-3" action="http://localhost/cadastro-produtos/prod/" method="post">
+<form class="row g-3" action="<?php echo ConfigSite::$ROOT; ?>/prod/" method="post">
     <div class="col-auto">
         <label for="nome" class="visually-hidden">Produto</label>
         <input type="text" class="form-control" placeholder="Nome do produto" aria-label="First name"
                type="text"
-               name="nome_filtro" value="<?php echo($produtos['filtros']['nome_filtro'] ?? "") ?>"
+               name="nome_filtro" value="<?php echo($produtos['filtros']['nome_filtro'] ?? ""); ?>"
                id="nome">
     </div>
     <div class="col-auto">
@@ -36,7 +39,7 @@ $produtorepository = new ProdutoRepository();
 $produtorepository->showMessage();
 ?>
 
-<form action="prod/" method="post">
+<form action="<?php echo ConfigSite::$ROOT; ?>prod/" method="post">
     <table class="table table-bordered table-striped" style="text-align: center">
         <thead class="table" style="background-color: #739072">
 
@@ -70,12 +73,12 @@ $produtorepository->showMessage();
                             color: white;
                         }
                     </style>
-                    <a href="http://localhost/cadastro-produtos/prod/edit/<?php echo $produto["id"]; ?>"
+                    <a href="<?php echo ConfigSite::$ROOT; ?>/prod/edit/<?php echo $produto["id"]; ?>"
                        class="btn btn-outline-success" style="border-color: #739072;" tabindex="-1" role="button"
                        aria-disabled="true">Editar</a>
 
-
-                    <a href="http://localhost/cadastro-produtos/prod/delete/<?php echo $produto["id"]; ?>" type="button" class="btn btn-outline-danger btn-delete">
+                    <a href="<?php echo ConfigSite::$ROOT; ?>/prod/delete/<?php echo $produto["id"]; ?>" type="button"
+                       class="btn btn-outline-danger btn-delete">
                         Deletar
                     </a>
 
@@ -89,7 +92,7 @@ $produtorepository->showMessage();
     </table>
 </form>
 
-<form action="prod" method="post">
+<form action="<?php echo ConfigSite::$ROOT; ?>/prod" method="post">
     <div class="center" style="text-align: center;">
         <?php if (empty($_REQUEST["nome_filtro"])) {
             ?><strong>Página <?php echo $page_no . " de " . $total_no_of_pages; ?></strong><?php
@@ -101,7 +104,7 @@ $produtorepository->showMessage();
 <br>
 <br>
 
-<div class="modal" id="exampleCentralModal1"  aria-labelledby="exampleModalLabel"
+<div class="modal" id="exampleCentralModal1" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog modal-sm">
         <div class="modal-content text-center">
@@ -113,7 +116,9 @@ $produtorepository->showMessage();
                 <i class="fas fa-times fa-3x text-danger"></i>
             </div>
             <div class="modal-footer d-flex justify-content-center">
-                <button type="button" id="btn-confirm-delete" class="btn btn-outline-danger" data-bs-dismiss="modal">Sim</button>
+                <button type="button" id="btn-confirm-delete" class="btn btn-outline-danger" data-bs-dismiss="modal">
+                    Sim
+                </button>
 
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Não</button>
             </div>
@@ -139,14 +144,15 @@ $produtorepository->showMessage();
 ></script>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function(event) {
+    document.addEventListener("DOMContentLoaded", function (event) {
         var buttons = document.getElementsByClassName('btn-delete');
-        for (var i=0; i < buttons.length; i++) {
-            buttons[i].onclick = function(event) {
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].onclick = function (event) {
                 event.preventDefault();
                 openDeleteConfirmationDialog(event.target.href);
             }
-        };
+        }
+        ;
     });
 
     function openDeleteConfirmationDialog(href) {

@@ -1,5 +1,6 @@
 <?php
 include_once 'setup.php';
+include_once "controllers/ConfigSite.php";
 ?>
 <!DOCTYPE html>
 <html>
@@ -14,7 +15,7 @@ include_once 'setup.php';
 </head>
 <body>
 <?php include_once 'view/Navbar.html'; ?>
-<form action='http://localhost/cadastro-produtos/prod/cadastro' method='post'>
+<form action='<?php echo ConfigSite::$ROOT;?>/prod/cadastro' method='post'>
     <h5 style="padding: 10px;">Cadastre o Seu produto</h5>
     <div class="input-group mb-3 " style="width: 25%; padding: 10px;">
         <input name="nome" type="text" id="nome" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2" >

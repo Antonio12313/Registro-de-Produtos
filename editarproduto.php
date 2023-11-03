@@ -10,7 +10,8 @@
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
-<?php include_once 'view/Navbar.html'; ?>
+<?php include_once 'view/Navbar.html';
+include_once 'controllers/ConfigSite.php';?>
 <?php
 $url = explode('/', filter_var(rtrim($_GET['url'], '/'), FILTER_SANITIZE_URL));
 $id = $url[2];
@@ -31,7 +32,7 @@ $id = $url[2];
         <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Atualizar</button>
     </div>
 </form>
-<a href="http://localhost/cadastro-produtos/prod" type="submit" class="btn btn-outline-success mb-3"
+<a href="<?php echo ConfigSite::$ROOT;?>/prod" type="submit" class="btn btn-outline-success mb-3"
    style="border-color: #739072; margin: 10px; ">voltar
 </a>
 
