@@ -37,7 +37,7 @@
                             <h2 class="text-uppercase text-center mb-3">Faça o Login</h2>
                             <form>
                                 <div class="form-outline mb-3">
-                                    <input type="email"  name="login" id="login"
+                                    <input type="email" name="login" id="login"
                                            class="form-control form-control-lg"/>
                                     <label class="form-label" for="login">Email</label>
                                 </div>
@@ -48,7 +48,8 @@
                                 </div>
                                 <div class="d-flex justify-content-center">
                                     <button type="submit"
-                                            class="btn btn-success btn-block btn-lg text-body" name="entrar" value="Entrar">
+                                            class="btn btn-success btn-block btn-lg text-body" name="entrar"
+                                            value="Entrar">
                                         Entrar
                                     </button>
                                 </div>

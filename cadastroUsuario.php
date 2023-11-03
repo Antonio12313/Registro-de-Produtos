@@ -29,7 +29,7 @@
         <div class=" row d-flex justify-content-right align-items-center h-100">
             <div class="text-center">
                 <img src="public/imagens/imgg.png" class="img-fluid" alt=""  style="width: 400px; margin-bottom: -107px;">
-                <p class="fonte" style="font-family: cursive; ">Cradastre-se aqui para poder armazenar os dados dos seus itens!</p>
+                <p class="fonte" style="font-family: cursive; ">Cradastre-se aqui para poder ter controle do seu estoque!</p>
             </div>
         </div>
     </div>
