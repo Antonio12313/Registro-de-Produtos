@@ -1,13 +1,12 @@
 <!doctype html>
 <html lang="br">
 <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
 <?php include_once 'view/Navbar.html'; ?>
@@ -75,9 +74,11 @@ $produtorepository->showMessage();
                        class="btn btn-outline-success" style="border-color: #739072;" tabindex="-1" role="button"
                        aria-disabled="true">Editar</a>
 
+
                     <a href="http://localhost/cadastro-produtos/prod/delete/<?php echo $produto["id"]; ?>" type="button" class="btn btn-outline-danger btn-delete">
                         Deletar
                     </a>
+
                 </td>
             </tr>
 
@@ -112,7 +113,8 @@ $produtorepository->showMessage();
                 <i class="fas fa-times fa-3x text-danger"></i>
             </div>
             <div class="modal-footer d-flex justify-content-center">
-                <button type="button" id="btn-confirm-delete" class="btn btn-success" data-bs-dismiss="modal">Sim</button>
+                <button type="button" id="btn-confirm-delete" class="btn btn-outline-danger" data-bs-dismiss="modal">Sim</button>
+
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Não</button>
             </div>
         </div>
@@ -140,19 +142,16 @@ $produtorepository->showMessage();
     document.addEventListener("DOMContentLoaded", function(event) {
         var buttons = document.getElementsByClassName('btn-delete');
         for (var i=0; i < buttons.length; i++) {
-            buttons[i].onclick = function(element) {
-                element.preventDefault();
-                openDeleteConfirmationDialog(element.href);
+            buttons[i].onclick = function(event) {
+                event.preventDefault();
+                openDeleteConfirmationDialog(event.target.href);
             }
-
-
         };
     });
 
     function openDeleteConfirmationDialog(href) {
         document.getElementById("btn-confirm-delete").onclick = function () {
-            window.location = ""
-            alert("dasdas");
+            window.location = href
         };
 
         var myModal = new bootstrap.Modal(document.getElementById('exampleCentralModal1'), {
