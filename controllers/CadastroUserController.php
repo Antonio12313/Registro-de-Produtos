@@ -10,8 +10,7 @@ class CadastroUserController
         $produtoRepository = new ProdutoRepository();
         $mensagem = "";
 
-        if (!empty($params["entrar"]) && !empty($params["login_cadastro"]) && !empty($params["senha_cadastro"])) {
-
+        if (!empty($params["login_cadastro"]) && !empty($params["senha_cadastro"])) {
             $nome = $params["nome"];
             $login = $params["login_cadastro"];
             $senha = md5($params["senha_cadastro"]);

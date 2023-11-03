@@ -11,28 +11,58 @@
 </head>
 <body>
 <form action="login" class="" method="post">
-    <div class="center" style=" border: 1px solid; margin: 40px; width: 25%; padding: 10px;">
-        <div class="mb-3">
-            <label for="login" class="form-label">Faça o Login</label>
-            <input type="email" class="form-control" name="login" id="login" required placeholder="nome@mail.com">
-            <label for="senha" class="form-label">Password</label>
-            <input type="password" id="senha" class="form-control" name="senha" aria-describedby="passwordHelpBlock">
-        </div>
-        <div class="position-relative">
-            <style>
-                .btn.btn-outline-primary:hover {
-                    background-color: #386bc0;
-                    color: white;
-                }
-            </style>
-            <input type="submit" class="btn btn-outline-primary" style="margin: 10px; margin-left: 0px" name="entrar"
-                   value="Entrar">
-            <div class="position-absolute top-50 start-50 translate-middle" style="height: 1.5rem;">
-                <a href="cadastroUser">Cadastre-se</a>
-                <?php
-                $produtorepository = new ProdutoRepository();
-                $produtorepository->showMessage();
-                ?>
+    <style>
+        .btn.btn-success:hover {
+            background-color: white;
+            border-color: #000000;
+            --mdb-btn-box-shadow-state: 0 8px 9px -4px rgb(0 0 0 / 30%), 0 4px 18px 0 rgba(20, 164, 77, 0.2);
+            color: black !important;
+
+        }
+
+        .btn.btn-success {
+            background-color: #739072;
+            --mdb-btn-box-shadow: 0 4px 9px -4px #000000;
+            color: white !important;
+
+        }
+    </style>
+    <div class="mask d-flex align-items-center h-100 gradient-custom-3"
+         style="">
+        <div class="container h-100 ">
+            <div class="row d-flex justify-content-right align-items-center h-100 ">
+                <div class="col-12 col-md-9 col-lg-7 col-xl-6" style="width: 30%;">
+                    <div class="card" style="border-radius: 15px;">
+                        <div class="card-body p-5">
+                            <h2 class="text-uppercase text-center mb-3">Faça o Login</h2>
+                            <form>
+                                <div class="form-outline mb-3">
+                                    <input type="email"  name="login" id="login"
+                                           class="form-control form-control-lg"/>
+                                    <label class="form-label" for="login">Email</label>
+                                </div>
+                                <div class="form-outline mb-3">
+                                    <input type="password" id="senha" name="senha"
+                                           required class="form-control form-control-lg"/>
+                                    <label class="form-label" for="senha">Senha</label>
+                                </div>
+                                <div class="d-flex justify-content-center">
+                                    <button type="submit"
+                                            class="btn btn-success btn-block btn-lg text-body" name="entrar" value="Entrar">
+                                        Entrar
+                                    </button>
+                                </div>
+                                <?php
+                                $produtorepository = new ProdutoRepository();
+                                $produtorepository->showMessage();
+                                ?>
+                                <p class="text-center text-muted mt-3 mb-1">Ainda não possui uma conta? <a
+                                            href="cadastroUser"
+                                            class="fw-bold text-body"><u>Registre-se</u></a></p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
