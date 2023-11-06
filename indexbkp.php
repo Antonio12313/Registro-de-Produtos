@@ -52,11 +52,14 @@ $produtorepository->showMessage();
             <thead class="table" style="background-color: #739072">
 
             <tr style="color: white;font-size: 1rem;">
+                <td>Id</td>
                 <td>Nome</td>
+                <td>Valor</td>
+                <td>Quantidade</td>
                 <td>Usuário</td>
                 <td>Foi criado em</td>
                 <td>Ultima vez Atualizado</td>
-                <td>Ação</td>
+                <td>Opções</td>
             </tr>
             </thead>
             <tbody>
@@ -64,7 +67,10 @@ $produtorepository->showMessage();
             foreach ($produtos['dados'] as $produto) {
                 ?>
                 <tr style="font-size: 1rem;">
+                    <td> <strong> <?php echo $produto["id"]; ?></strong></td>
                     <td><?php echo $produto["nome"]; ?></td>
+                    <td><?php echo $produto["valor"]; ?></td>
+                    <td><?php echo $produto["quantidade"]; ?></td>
                     <td><?php echo $produto["name"]; ?></td>
                     <td><?php echo $produto["created_at"] ?></td>
                     <td><?php echo $produto["updated_at"] ?></td>
@@ -139,7 +145,6 @@ $produtorepository->showMessage();
                 openDeleteConfirmationDialog(event.target.href);
             }
         }
-
     });
 
     function openDeleteConfirmationDialog(href) {

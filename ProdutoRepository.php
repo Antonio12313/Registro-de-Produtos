@@ -17,13 +17,17 @@ class ProdutoRepository
 
         $conn = $this->conn->getConnection();
         $sql = "SELECT p.id, 
-                       p.nome, 
+                       p.nome,
+                       d.valor,
+                       d.quantidade,
                        u.name, 
                        date_format(p.created_at, '%d/%m/%Y %H:%i:%s') as created_at,
                        date_format(p.updated_at, '%d/%m/%Y %H:%i:%s') as updated_at
                 FROM produtos as p 
                 INNER JOIN users as u 
                 on p.user_id = u.id
+                LEFT JOIN dados_produto as d 
+                on  p.id = d.prod_id 
                 WHERE p.deleted_at is null";
         $nomefiltro = $filtro['nome_filtro'] ?? [];
         $nomeuser = $filtro['nome_user'] ?? [];
@@ -42,6 +46,8 @@ class ProdutoRepository
                 $dados[] = [
                     "id" => $row["id"],
                     "nome" => $row["nome"],
+                    "valor"=> $row["valor"],
+                    "quantidade"=> $row["quantidade"],
                     "name" => $row["name"],
                     "created_at" => $row["created_at"],
                     "updated_at" => $row["updated_at"]
@@ -59,7 +65,15 @@ class ProdutoRepository
     function getProduto($id): array
     {
         $conn = $this->conn->getConnection();
-        $sql = "SELECT p.id, p.nome, u.name,p.created_at,p.updated_at FROM produtos as p INNER JOIN users as u on p.user_id = u.id WHERE p.id = '$id'";
+        $sql = "SELECT p.id, 
+                        p.nome, 
+                        u.name,
+                        p.created_at,
+                        p.updated_at 
+                FROM produtos as p 
+                INNER JOIN users as u 
+                on p.user_id = u.id
+                WHERE p.id = '$id'";
         $result = $conn->query($sql);
         $produto = [];
 
@@ -95,6 +109,24 @@ class ProdutoRepository
         return true;
     }
 
+    function getUserID($email)
+    {
+        $conn = $this->conn->getConnection();
+        $sql = "SELECT id, email FROM users WHERE email = '" . $email . "'";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            while ($row = mysqli_fetch_array($result)) {
+                $produto = [
+                    "id" => $row["id"],
+                ];
+            }
+
+        }
+        $conn->close();
+        return $produto;
+    }
+
     function deleteProduto($id)
     {
         $conn = $this->conn->getConnection();
@@ -102,8 +134,13 @@ class ProdutoRepository
         $sql = "DELETE FROM sub_produtos  WHERE produto_id = '$id'";
         $conn->query($sql);
 
+        $sql = "DELETE FROM dados_produto  WHERE prod_id = '$id'";
+        $conn->query($sql);
+
         $sql = "DELETE FROM produtos  WHERE id = '$id'";
         $conn->query($sql);
+
+
         if ($conn->connect_error) {
             $conn->rollback();
             die("Connection failed: " . $conn->connect_error);
@@ -115,13 +152,15 @@ class ProdutoRepository
         return $conn;
     }
 
-    function storeProduto($nome, $id)
+    function storeProduto($nome, $id, $quantidade, $preco)
     {
         $conn = $this->conn->getConnection();
         $currentDateTime = new DateTime('now');
         $currentDate = $currentDateTime->format('Y-m-d H:i:s');
         $sql = "INSERT INTO produtos (nome,user_id,created_at ,updated_at) VALUES ('$nome','$id','$currentDate','$currentDate')";
         $conn->query($sql);
+        $sql2 = "INSERT INTO dados_produto (quantidade,valor,prod_id,created_at ,updated_at) VALUES('$quantidade','$preco',(SELECT id FROM produtos WHERE created_at = '$currentDate'),'$currentDate','$currentDate')";
+        $conn->query($sql2);
         $conn->close();
     }
 
@@ -138,7 +177,6 @@ class ProdutoRepository
         $conn->close();
         return $total_no_of_pages;
     }
-
 
     function getLogin($login, $senha): bool
     {
@@ -172,24 +210,6 @@ class ProdutoRepository
         $result = $conn->query($sql);
         $conn->close();
         return empty($result->num_rows);
-    }
-
-    function getUserID($email)
-    {
-        $conn = $this->conn->getConnection();
-        $sql = "SELECT id, email FROM users WHERE email = '" . $email . "'";
-        $result = $conn->query($sql);
-
-        if ($result->num_rows > 0) {
-            while ($row = mysqli_fetch_array($result)) {
-                $produto = [
-                    "id" => $row["id"],
-                ];
-            }
-
-        }
-        $conn->close();
-        return $produto;
     }
 
     public function showMessage(): void

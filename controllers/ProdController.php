@@ -59,12 +59,14 @@ class ProdController extends Controller
 
         if (!empty($params['nome'])) {
             $nome = $params['nome'];
+            $quantidade = $params['quantidade'];
+            $preco = $params['preco'];
             $email = $authenticator->getEmailUserLogged();
 
             $getuserId = $produtoRepository->getUserID($email);
             $id = $getuserId['id'];
 
-            $store = $produtoRepository->storeProduto($nome, $id);
+            $store = $produtoRepository->storeProduto($nome, $id,$quantidade,$preco);
             $mensagem = "Seu Produto foi cadastrado com sucesso!";
             $authenticator->notification($mensagem);
             header('Location: http://localhost/cadastro-produtos/prod');
