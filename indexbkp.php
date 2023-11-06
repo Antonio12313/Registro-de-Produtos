@@ -14,84 +14,90 @@ include_once 'view/Navbar.html';
 include_once 'controllers/ConfigSite.php';
 ?>
 <br>
-<form class="row g-3" action="<?php echo ConfigSite::$ROOT; ?>/prod/" method="post">
-    <div class="col-auto">
-        <label for="nome" class="visually-hidden">Produto</label>
-        <input type="text" class="form-control" placeholder="Nome do produto" aria-label="First name"
-               type="text"
-               name="nome_filtro" value="<?php echo($produtos['filtros']['nome_filtro'] ?? ""); ?>"
-               id="nome">
-    </div>
-    <div class="col-auto">
-        <label for="user" class="visually-hidden">Nome</label>
-        <input type="text" class="form-control" id="user" name="nome_user" placeholder="Nome do usuário"
-               value="<?php echo($produtos['filtros']['nome_user'] ?? "") ?>">
-    </div>
-    <div class="col-auto">
-        <button type="submit" class="btn btn-outline-success mb-3" value="Buscar" name="buscar"
-                style="border-color: #739072;">Buscar
-        </button>
-    </div>
-</form>
-
+<style>
+    .row.g-2 {
+        justify-content: end;
+        margin-bottom: -13px;
+    }
+</style>
+<section>
+    <form class="row g-2" action="<?php echo ConfigSite::$ROOT; ?>/prod/" method="post" style="">
+        <h2 class="col-auto" style="margin-right: 36rem;">Inventário</h2>
+        <div class="col-auto">
+            <label for="nome" class="visually-hidden">Produto</label>
+            <input type="text" class="form-control" placeholder="Pesquise o produto" aria-label="First name"
+                   name="nome_filtro" value="<?php echo($produtos['filtros']['nome_filtro'] ?? ""); ?>"
+                   id="nome">
+        </div>
+        <div class="col-auto">
+            <label for="user" class="visually-hidden">Nome</label>
+            <input type="text" class="form-control" id="user" name="nome_user" placeholder="Pesquise o usuário"
+                   value="<?php echo($produtos['filtros']['nome_user'] ?? "") ?>">
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-outline-success mb-3" value="Buscar" name="buscar"
+                    style="border-color: #739072;">Buscar
+            </button>
+        </div>
+    </form>
+</section>
 <?php
 $produtorepository = new ProdutoRepository();
 $produtorepository->showMessage();
 ?>
 
-<form action="<?php echo ConfigSite::$ROOT; ?>prod/" method="post">
-    <table class="table table-bordered table-striped" style="text-align: center">
-        <thead class="table" style="background-color: #739072">
+<section>
+    <form action="<?php echo ConfigSite::$ROOT; ?>prod/" method="post" class="row g-2">
+        <table class="table table-bordered table-striped" style="text-align: center">
+            <thead class="table" style="background-color: #739072">
 
-        <tr style="color: white;font-size: 1rem;">
-            <td>Nome</td>
-            <td>Usuário</td>
-            <td>Foi criado em</td>
-            <td>Ultima vez Atualizado</td>
-            <td>Ação</td>
-        </tr>
-        </thead>
-        <tbody>
-        <?php
-        foreach ($produtos['dados'] as $produto) {
-            ?>
-            <tr style="font-size: 1rem;">
-                <td><?php echo $produto["nome"]; ?></td>
-                <td><?php echo $produto["name"]; ?></td>
-                <td><?php echo $produto["created_at"] ?></td>
-                <td><?php echo $produto["updated_at"] ?></td>
-                <td>
-                    <style>
-                        .btn.btn-outline-success:hover {
-                            background-color: #739072;
-                            color: white;
-
-                        }
-
-                        .btn.btn-outline-danger:hover {
-                            background-color: rgb(220, 76, 100);
-                            color: white;
-                        }
-                    </style>
-                    <a href="<?php echo ConfigSite::$ROOT; ?>/prod/edit/<?php echo $produto["id"]; ?>"
-                       class="btn btn-outline-success" style="border-color: #739072;" tabindex="-1" role="button"
-                       aria-disabled="true">Editar</a>
-
-                    <a href="<?php echo ConfigSite::$ROOT; ?>/prod/delete/<?php echo $produto["id"]; ?>" type="button"
-                       class="btn btn-outline-danger btn-delete">
-                        Deletar
-                    </a>
-
-                </td>
+            <tr style="color: white;font-size: 1rem;">
+                <td>Nome</td>
+                <td>Usuário</td>
+                <td>Foi criado em</td>
+                <td>Ultima vez Atualizado</td>
+                <td>Ação</td>
             </tr>
-
+            </thead>
+            <tbody>
             <?php
-        }
-        ?>
-        </tbody>
-    </table>
-</form>
+            foreach ($produtos['dados'] as $produto) {
+                ?>
+                <tr style="font-size: 1rem;">
+                    <td><?php echo $produto["nome"]; ?></td>
+                    <td><?php echo $produto["name"]; ?></td>
+                    <td><?php echo $produto["created_at"] ?></td>
+                    <td><?php echo $produto["updated_at"] ?></td>
+                    <td>
+                        <style>
+                            .btn.btn-outline-success:hover {
+                                background-color: #739072;
+                                color: white;
 
+                            }
+
+                            .btn.btn-outline-danger:hover {
+                                background-color: rgb(220, 76, 100);
+                                color: white;
+                            }
+                        </style>
+                        <a href="<?php echo ConfigSite::$ROOT; ?>/prod/edit/<?php echo $produto["id"]; ?>"
+                           class="btn btn-outline-success" style="border-color: #739072;" tabindex="-1" role="button"
+                           aria-disabled="true">Editar</a>
+                        <a href="<?php echo ConfigSite::$ROOT; ?>/prod/delete/<?php echo $produto["id"]; ?>"
+                           type="button"
+                           class="btn btn-outline-danger btn-delete">
+                            Deletar
+                        </a>
+                    </td>
+                </tr>
+                <?php
+            }
+            ?>
+            </tbody>
+        </table>
+    </form>
+</section>
 <form action="<?php echo ConfigSite::$ROOT; ?>/prod" method="post">
     <div class="center" style="text-align: center;">
         <?php if (empty($_REQUEST["nome_filtro"])) {
@@ -101,9 +107,6 @@ $produtorepository->showMessage();
     </div>
 </form>
 <br>
-<br>
-<br>
-
 <div class="modal" id="exampleCentralModal1" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog modal-sm">
@@ -126,23 +129,7 @@ $produtorepository->showMessage();
     </div>
 </div>
 </body>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
-<link
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-        rel="stylesheet"/>
-<link
-        href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-        rel="stylesheet"/>
-<link
-        href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css"
-        rel="stylesheet"/>
-<script
-        type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"
-></script>
-
+<?php include_once "JavaScript/script.html"; ?>
 <script>
     document.addEventListener("DOMContentLoaded", function (event) {
         var buttons = document.getElementsByClassName('btn-delete');
@@ -152,7 +139,7 @@ $produtorepository->showMessage();
                 openDeleteConfirmationDialog(event.target.href);
             }
         }
-        ;
+
     });
 
     function openDeleteConfirmationDialog(href) {
@@ -166,5 +153,4 @@ $produtorepository->showMessage();
         myModal.show();
     }
 </script>
-
 </html>

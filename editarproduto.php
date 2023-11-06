@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -36,23 +36,8 @@ $id = $url[2];
    style="border-color: #739072; margin: 10px; ">voltar
 </a>
 
+<?php include_once "JavaScript/script.html";?>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
-<link
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-        rel="stylesheet"/>
-<link
-        href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-        rel="stylesheet"/>
-<link
-        href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css"
-        rel="stylesheet"/>
-<script
-        type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"
-></script>
 </body>
 
 
