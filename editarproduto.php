@@ -29,6 +29,15 @@ $id = $url[2];
     <div class="input-group mb-3 " style="width: 25%; padding: 10px;">
         <input type="text" class="form-control" name="nome" value="<?php echo $produto["nome"]; ?>"
                aria-label="Recipient's username" aria-describedby="button-addon2">
+    </div>
+    <div class="input-group mb-3 " style="width: 25%; padding: 10px;">
+        <input type="number" class="form-control" name="valor_prod" value="<?php echo $produto["valor"]; ?>"
+               aria-label="Recipient's username" aria-describedby="button-addon2">
+    </div>
+    <div class="input-group mb-3 " style="width: 25%; padding: 10px;">
+
+        <input type="number" class="form-control" name="quantidade_prod" value="<?php echo $produto["quantidade"]; ?>"
+               aria-label="Recipient's username" aria-describedby="button-addon2">
         <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Atualizar</button>
     </div>
 </form>

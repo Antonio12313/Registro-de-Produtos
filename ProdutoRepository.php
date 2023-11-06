@@ -66,13 +66,17 @@ class ProdutoRepository
     {
         $conn = $this->conn->getConnection();
         $sql = "SELECT p.id, 
-                        p.nome, 
+                        p.nome,
+                        d.valor,
+                        d.quantidade,
                         u.name,
                         p.created_at,
                         p.updated_at 
                 FROM produtos as p 
                 INNER JOIN users as u 
                 on p.user_id = u.id
+                LEFT JOIN dados_produto as d 
+                on  p.id = d.prod_id
                 WHERE p.id = '$id'";
         $result = $conn->query($sql);
         $produto = [];
@@ -82,6 +86,8 @@ class ProdutoRepository
             $produto = [
                 "id" => $row["id"],
                 "nome" => $row["nome"],
+                "valor"=> $row["valor"],
+                "quantidade"=> $row["quantidade"],
                 "name" => $row["name"],
                 "created_at" => $row["created_at"],
                 "updated_at" => $row["updated_at"]
@@ -101,6 +107,8 @@ class ProdutoRepository
         $conn = $this->conn->getConnection();
         $sql = "UPDATE produtos set nome = '" . $dados['nome'] . "', user_id = '" . $userId['id'] . "',updated_at = '" . $currentDate . "'  WHERE id = '$id'";
         $conn->query($sql);
+        $sql2 = "UPDATE dados_produto set quantidade = '" . $dados['quantidade_prod'] . "', valor = '" . $dados['valor_prod'] . "',updated_at = '" . $currentDate . "'  WHERE prod_id = '$id'";
+        $conn->query($sql2);
 
         if ($conn->error) {
             return false;
