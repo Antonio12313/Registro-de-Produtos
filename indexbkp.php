@@ -42,6 +42,7 @@ include_once 'controllers/ConfigSite.php';
     </form>
 </section>
 <?php
+
 $produtorepository = new ProdutoRepository();
 $produtorepository->showMessage();
 ?>
@@ -54,8 +55,7 @@ $produtorepository->showMessage();
             <tr style="color: white;font-size: 1rem;">
                 <td>Id</td>
                 <td>Nome</td>
-                <td>Valor</td>
-                <td>Quantidade</td>
+                <td>Estoque</td>
                 <td>Usuário</td>
                 <td>Foi criado em</td>
                 <td>Ultima vez Atualizado</td>
@@ -67,10 +67,9 @@ $produtorepository->showMessage();
             foreach ($produtos['dados'] as $produto) {
                 ?>
                 <tr style="font-size: 1rem;">
-                    <td> <strong> <?php echo $produto["id"]; ?></strong></td>
+                    <td><strong> <?php echo $produto["id"]; ?></strong></td>
                     <td><?php echo $produto["nome"]; ?></td>
-                    <td><?php echo $produto["valor"]; ?></td>
-                    <td><?php echo $produto["quantidade"]; ?></td>
+                    <td><?php echo $produto["estoque"]; ?></td>
                     <td><?php echo $produto["name"]; ?></td>
                     <td><?php echo $produto["created_at"] ?></td>
                     <td><?php echo $produto["updated_at"] ?></td>
@@ -135,6 +134,7 @@ $produtorepository->showMessage();
     </div>
 </div>
 </body>
+
 <?php include_once "JavaScript/script.html"; ?>
 <script>
     document.addEventListener("DOMContentLoaded", function (event) {

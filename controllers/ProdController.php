@@ -3,7 +3,7 @@ include_once 'ProdutoRepository.php';
 include_once 'setup.php';
 include_once 'Controller.php';
 include_once 'controllers/Authenticator.php';
-
+include_once 'controllers/EstoqueEnum.php';
 class ProdController extends Controller
 {
 
@@ -29,8 +29,7 @@ class ProdController extends Controller
         $second_last = $total_no_of_pages - 1;
         $produtos = $produtoRepository->getProdutos($offset, $total_records_per_page, $params);
 
-
-        include_once "indexbkp.php";
+        include_once "indexbkp.php";;
     }
 
     public function edit($id, $params)
@@ -56,17 +55,14 @@ class ProdController extends Controller
     {
         $produtoRepository = new ProdutoRepository();
         $authenticator = new Authenticator();
-
         if (!empty($params['nome'])) {
             $nome = $params['nome'];
-            $quantidade = $params['quantidade'];
-            $preco = $params['preco'];
             $email = $authenticator->getEmailUserLogged();
 
             $getuserId = $produtoRepository->getUserID($email);
             $id = $getuserId['id'];
 
-            $store = $produtoRepository->storeProduto($nome, $id,$quantidade,$preco);
+            $store = $produtoRepository->storeProduto($nome, $id);
             $mensagem = "Seu Produto foi cadastrado com sucesso!";
             $authenticator->notification($mensagem);
             header('Location: http://localhost/cadastro-produtos/prod');
@@ -90,6 +86,29 @@ class ProdController extends Controller
             exit;
         }
         include_once "indexbkp.php";
+    }
+
+    public function controleEstoque($params)
+    {
+        $produtoRepository = new ProdutoRepository();
+        $authenticator = new Authenticator();
+        if (!empty($params['produto']) && isset($params['tipo_movimentacao'])) {
+            $idProdutoMovimentacao = $params['produto'];
+            $quantidade = $params['quantidade'];
+            $tipoMovimentacao = $params['tipo_movimentacao'];
+
+            $email = $authenticator->getEmailUserLogged();
+
+            $getuserId = $produtoRepository->getUserID($email);
+            $id = $getuserId['id'];
+
+            $produtoRepository->storeMovimentacao($idProdutoMovimentacao,$quantidade,$tipoMovimentacao);
+            $mensagem = "Sua movimentação foi cadastrado com sucesso!";
+            $authenticator->notification($mensagem);
+            header('Location: http://localhost/cadastro-produtos/prod');
+            exit;
+        }
+        include_once 'controleEstoque.php';
     }
 
 }
