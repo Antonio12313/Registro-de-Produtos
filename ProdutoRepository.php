@@ -158,13 +158,14 @@ class ProdutoRepository
     {
         $conn = $this->conn->getConnection();
         $conn->begin_transaction();
-        $sql = "DELETE FROM sub_produtos  WHERE produto_id = '$id'";
+        $currentDateTime = new DateTime('now');
+        $currentDate = $currentDateTime->format('Y-m-d H:i:s');
+
+
+        $sql = "UPDATE movimentacao_produtos SET deleted_at = '" . $currentDate . "' WHERE produto_id = '$id'";
         $conn->query($sql);
 
-        $sql = "DELETE FROM movimentacao_produtos  WHERE produto_id = '$id'";
-        $conn->query($sql);
-
-        $sql = "DELETE FROM produtos  WHERE id = '$id'";
+        $sql = "UPDATE produtos SET deleted_at = '" . $currentDate . "' WHERE id = '$id'";
         $conn->query($sql);
 
 
@@ -260,8 +261,9 @@ class ProdutoRepository
         }
     }
 
-    public function numberFormat(float $numero){
-        $numeroFormatado = number_format($numero,2,',','');
+    public function numberFormat(float $numero)
+    {
+        $numeroFormatado = number_format($numero, 2, ',', '');
         return $numeroFormatado;
     }
 
