@@ -58,7 +58,7 @@ $produtorepository->showMessage();
                 <td>Estoque</td>
                 <td>Usuário</td>
                 <td>Foi criado em</td>
-                <td>Ultima vez Atualizado</td>
+                <td>Ultima Modificação</td>
                 <td>Opções</td>
             </tr>
             </thead>

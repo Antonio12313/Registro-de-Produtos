@@ -17,20 +17,21 @@ class ProdutoRepository
 
         $conn = $this->conn->getConnection();
         $sql = "SELECT p.id,
-                        p.nome,
-                        sum(case when m.tipo_produto = 1 then m.quantidade else 0 end) - sum(case when m.tipo_produto = 2 then m.quantidade else 0 end) as estoque,
-                        u.name,
-                        date_format(p.created_at, '%d/%m/%Y %H:%i:%s') as created_at,
-                        date_format(p.updated_at, '%d/%m/%Y %H:%i:%s') as updated_at
+                       p.nome,
+                       sum(case when m.tipo_produto = 1 then m.quantidade else 0 end) - sum(case when m.tipo_produto = 2 then m.quantidade else 0 end) as estoque,
+                       u.name,
+                       date_format(p.created_at, '%d/%m/%Y %H:%i:%s') as created_at,
+                       date_format(p.updated_at, '%d/%m/%Y %H:%i:%s') as updated_at
                     FROM produtos as p
                     INNER JOIN users as u
-                        on p.user_id = u.id
+                       on p.user_id = u.id
                     LEFT JOIN movimentacao_produtos as m
-                        on  p.id = m.produto_id
-                    WHERE p.deleted_at is null
-                    ";
+                       on  p.id = m.produto_id
+                    WHERE p.deleted_at is null";
+
         $nomefiltro = $filtro['nome_filtro'] ?? [];
         $nomeuser = $filtro['nome_user'] ?? [];
+
         if (!empty($nomefiltro)) {
             $sql .= " AND p.nome like '%$nomefiltro%'";
         }
@@ -46,7 +47,7 @@ class ProdutoRepository
                 $dados[] = [
                     "id" => $row["id"],
                     "nome" => $row["nome"],
-                    "estoque"=> $row["estoque"],
+                    "estoque" => $row["estoque"],
                     "name" => $row["name"],
                     "created_at" => $row["created_at"],
                     "updated_at" => $row["updated_at"]
@@ -76,8 +77,7 @@ class ProdutoRepository
                     LEFT JOIN movimentacao_produtos as m
                         on  p.id = m.produto_id
                     WHERE p.deleted_at is null
-                AND p.id = '$id'
-                GROUP BY p.id";
+                AND p.id = '$id'";
         $result = $conn->query($sql);
         $produto = [];
 
@@ -86,7 +86,7 @@ class ProdutoRepository
             $produto = [
                 "id" => $row["id"],
                 "nome" => $row["nome"],
-                "estoque"=> $row["estoque"],
+                "estoque" => $row["estoque"],
                 "name" => $row["name"],
                 "created_at" => $row["created_at"],
                 "updated_at" => $row["updated_at"]
@@ -97,7 +97,8 @@ class ProdutoRepository
         return $produto;
     }
 
-    function getControleProduto():array{
+    function getControleProduto(): array
+    {
         $conn = $this->conn->getConnection();
         $sql = "SELECT id, nome FROM produtos WHERE deleted_at is null";
         $result = $this->conn->getConnection()->query($sql);
@@ -187,12 +188,15 @@ class ProdutoRepository
         $conn->query($sql);
         $conn->close();
     }
-    function storeMovimentacao($id, $quantidade, $tipoMovimentacao){
+
+    function storeMovimentacao($id, $quantidade, $tipoMovimentacao)
+    {
         $conn = $this->conn->getConnection();
         $currentDateTime = new DateTime('now');
         $currentDate = $currentDateTime->format('Y-m-d H:i:s');
         $sql2 = "INSERT INTO movimentacao_produtos (quantidade,tipo_produto,produto_id,created_at ,updated_at) VALUES('$quantidade','$tipoMovimentacao',(SELECT id FROM produtos WHERE id= '$id'),'$currentDate','$currentDate')";
         $conn->query($sql2);
+        $conn->close();
     }
 
     function paginacao($total_records_per_page)

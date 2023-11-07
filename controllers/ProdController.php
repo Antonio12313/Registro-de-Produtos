@@ -92,20 +92,31 @@ class ProdController extends Controller
     {
         $produtoRepository = new ProdutoRepository();
         $authenticator = new Authenticator();
-        if (!empty($params['produto']) && isset($params['tipo_movimentacao'])) {
+        if (!empty($params['produto']) && isset($params['tipo_movimentacao']) && isset($params['quantidade'])) {
             $idProdutoMovimentacao = $params['produto'];
             $quantidade = $params['quantidade'];
             $tipoMovimentacao = $params['tipo_movimentacao'];
 
             $email = $authenticator->getEmailUserLogged();
-
             $getuserId = $produtoRepository->getUserID($email);
             $id = $getuserId['id'];
 
-            $produtoRepository->storeMovimentacao($idProdutoMovimentacao,$quantidade,$tipoMovimentacao);
-            $mensagem = "Sua movimentação foi cadastrado com sucesso!";
-            $authenticator->notification($mensagem);
-            header('Location: http://localhost/cadastro-produtos/prod');
+            $quantidadeEstoque = $produtoRepository->getProduto($idProdutoMovimentacao);
+            $total =  $quantidadeEstoque['estoque'] - $quantidade;
+            if($total < 0 && $tipoMovimentacao == 2 ){
+                $mensagem = "Impossivel realizar esta ação, Verifique se o produto está em estoque para poder realizar a saída!";
+                $authenticator->notification($mensagem);
+                header('Location: http://localhost/cadastro-produtos/prod/controleEstoque');
+
+            }else{
+                echo $total;
+                $produtoRepository->storeMovimentacao($idProdutoMovimentacao,$quantidade,$tipoMovimentacao);
+                $mensagem = "Sua movimentação foi cadastrado com sucesso!";
+                $authenticator->notification($mensagem);
+                header('Location: http://localhost/cadastro-produtos/prod');
+
+
+            }
             exit;
         }
         include_once 'controleEstoque.php';
