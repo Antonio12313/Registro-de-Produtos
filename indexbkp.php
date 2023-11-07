@@ -54,8 +54,8 @@ $produtorepository->showMessage();
 
             <tr style="color: white;font-size: 1rem;">
                 <td>Id</td>
-                <td>Nome</td>
-                <td>Estoque</td>
+                <td>Produtos</td>
+                <td>Quantidade Em Estoque</td>
                 <td>Usuário</td>
                 <td>Foi criado em</td>
                 <td>Ultima Modificação</td>

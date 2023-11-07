@@ -3,7 +3,7 @@ include_once 'ProdutoRepository.php';
 include_once 'setup.php';
 include_once 'Controller.php';
 include_once 'Authenticator.php';
-
+include_once "utils/Navigation.php";
 class LoginController extends Controller
 {
     public function index($params)
@@ -11,7 +11,7 @@ class LoginController extends Controller
         $produtoRepository = new ProdutoRepository();
         $authenticator = new Authenticator();
         if ($authenticator->userIsLogged()) {
-            header("Location: prod");
+            Navigation::navigateTo("prod");
         }
 
         $mensagemLogin = "";
@@ -23,7 +23,7 @@ class LoginController extends Controller
 
             if ($loginValidar) {
                 $authenticator->logUser($login);
-                header("Location: prod");
+                Navigation::navigateTo("prod");
                 exit();
             } else {
                 $mensagemLogin = "Login ou senha incorreto!";

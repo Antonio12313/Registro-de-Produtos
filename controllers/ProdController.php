@@ -4,6 +4,7 @@ include_once 'setup.php';
 include_once 'Controller.php';
 include_once 'controllers/Authenticator.php';
 include_once 'controllers/EstoqueEnum.php';
+include_once 'utils/Navigation.php';
 class ProdController extends Controller
 {
 
@@ -42,7 +43,7 @@ class ProdController extends Controller
             $produtoRepository->updateProduto($id, $params, $user);
             $mensagem = "O seu Produto foi atualizado";
             $authenticator->notification($mensagem);
-            header("Location: ../");
+            Navigation::navigateTo("prod");
             exit;
         }
 
@@ -65,7 +66,7 @@ class ProdController extends Controller
             $store = $produtoRepository->storeProduto($nome, $id);
             $mensagem = "Seu Produto foi cadastrado com sucesso!";
             $authenticator->notification($mensagem);
-            header('Location: http://localhost/cadastro-produtos/prod');
+            Navigation::navigateTo("prod");
             exit;
         }
         include_once 'cadastroProduto.php';
@@ -82,7 +83,7 @@ class ProdController extends Controller
             $delete = $produtoRepository->deleteProduto($id);
             $mensagem = "Seu Produto foi deletado sucesso!";
             $message = $authenticator->notification($mensagem);
-            header('Location: http://localhost/cadastro-produtos/prod');
+            Navigation::navigateTo("prod");
             exit;
         }
         include_once "indexbkp.php";
@@ -106,16 +107,13 @@ class ProdController extends Controller
             if($total < 0 && $tipoMovimentacao == 2 ){
                 $mensagem = "Impossivel realizar esta ação, Verifique se o produto está em estoque para poder realizar a saída!";
                 $authenticator->notification($mensagem);
-                header('Location: http://localhost/cadastro-produtos/prod/controleEstoque');
-
+                Navigation::navigateToBack();
             }else{
                 echo $total;
                 $produtoRepository->storeMovimentacao($idProdutoMovimentacao,$quantidade,$tipoMovimentacao);
                 $mensagem = "Sua movimentação foi cadastrado com sucesso!";
                 $authenticator->notification($mensagem);
-                header('Location: http://localhost/cadastro-produtos/prod');
-
-
+                Navigation::navigateTo("prod");
             }
             exit;
         }

@@ -1,5 +1,6 @@
 <?php
+include_once "utils/Navigation.php";
 $authenticator = new Authenticator();
 $authenticator->userLogout();
-header('Location: http://localhost/cadastro-produtos/login');
+Navigation::navigateTo("login");
 ?>
