@@ -35,7 +35,7 @@ $produtoRepository->showMessage();
         </select>
     </div>
     <div class="input-group mb-3 " style="width: 26%; padding: 10px;">
-        <input name="quantidade" type="number" id="quantidade" class="form-control" aria-label="Recipient's username"
+        <input name="quantidade" type="number" step=any id="quantidade" class="form-control" aria-label="Recipient's username"
                aria-describedby="button-addon2" placeholder="Quantidade">
     </div>
     <div class="input-group mb-3 " style="width: 26%; padding: 10px;">

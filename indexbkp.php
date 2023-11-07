@@ -69,7 +69,7 @@ $produtorepository->showMessage();
                 <tr style="font-size: 1rem;">
                     <td><strong> <?php echo $produto["id"]; ?></strong></td>
                     <td><?php echo $produto["nome"]; ?></td>
-                    <td><?php echo $produto["estoque"]; ?></td>
+                    <td><?php echo $produtorepository->numberFormat($produto["estoque"]); ?></td>
                     <td><?php echo $produto["name"]; ?></td>
                     <td><?php echo $produto["created_at"] ?></td>
                     <td><?php echo $produto["updated_at"] ?></td>
@@ -112,6 +112,7 @@ $produtorepository->showMessage();
     </div>
 </form>
 <br>
+
 <div class="modal" id="exampleCentralModal1" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog modal-sm">
@@ -147,6 +148,7 @@ $produtorepository->showMessage();
         }
     });
 
+
     function openDeleteConfirmationDialog(href) {
         document.getElementById("btn-confirm-delete").onclick = function () {
             window.location = href
@@ -157,5 +159,6 @@ $produtorepository->showMessage();
         });
         myModal.show();
     }
+
 </script>
 </html>

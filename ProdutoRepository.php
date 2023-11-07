@@ -260,4 +260,9 @@ class ProdutoRepository
         }
     }
 
+    public function numberFormat(float $numero){
+        $numeroFormatado = number_format($numero,2,',','');
+        return $numeroFormatado;
+    }
+
 }
