@@ -1,6 +1,7 @@
 <?php
 include_once 'setup.php';
 include_once "controllers/ConfigSite.php";
+include_once 'controllers/EstoqueEnum.php';
 ?>
 <!DOCTYPE html>
 <html>
@@ -15,7 +16,6 @@ include_once "controllers/ConfigSite.php";
 </head>
 <body>
 <?php include_once 'view/Navbar.html';
-include_once 'controllers/EstoqueEnum.php';
 $produtoRepository = new ProdutoRepository();
 $produtos = $produtoRepository->getControleProduto();
 $produtoRepository->showMessage();

@@ -195,9 +195,25 @@ class ProdutoRepository
         $conn = $this->conn->getConnection();
         $currentDateTime = new DateTime('now');
         $currentDate = $currentDateTime->format('Y-m-d H:i:s');
-        $sql2 = "INSERT INTO movimentacao_produtos (quantidade,tipo_produto,produto_id,created_at ,updated_at) VALUES('$quantidade','$tipoMovimentacao',(SELECT id FROM produtos WHERE id= '$id'),'$currentDate','$currentDate')";
-        $conn->query($sql2);
+        $sql = "INSERT INTO movimentacao_produtos (quantidade,tipo_produto,produto_id,created_at ,updated_at) VALUES('$quantidade','$tipoMovimentacao',(SELECT id FROM produtos WHERE id= '$id'),'$currentDate','$currentDate')";
+        $conn->query($sql);
         $conn->close();
+    }
+
+    function storeVendas($nomeCliente,$idProduto,$dataVenda,$quantidadeVenda,$statusVenda)
+    {
+        $produtoRepository = new ProdutoRepository();
+        $conn = $this->conn->getConnection();
+        $currentDateTime = new DateTime('now');
+        $currentDate = $currentDateTime->format('Y-m-d H:i:s');
+        $sql = "INSERT INTO venda_produtos (nome_cliente,prod_id,quantidade_venda,data_venda,status_venda,created_at ,updated_at) VALUES('$nomeCliente',(SELECT id FROM produtos WHERE id= '$idProduto'),'$quantidadeVenda','$dataVenda','$statusVenda','$currentDate','$currentDate')";
+        if($sql == true){
+            $conn->query($sql);
+            $produtoRepository->storeMovimentacao($idProduto,$quantidadeVenda,2);
+            $conn->close();
+        }
+
+
     }
 
     function paginacao($total_records_per_page)

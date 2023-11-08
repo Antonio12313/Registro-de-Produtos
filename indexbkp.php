@@ -148,7 +148,6 @@ $produtorepository->showMessage();
         }
     });
 
-
     function openDeleteConfirmationDialog(href) {
         document.getElementById("btn-confirm-delete").onclick = function () {
             window.location = href

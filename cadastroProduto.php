@@ -24,7 +24,6 @@ include_once 'controllers/EstoqueEnum.php';
         <input name="nome" type="text" id="nome" class="form-control" aria-label="Recipient's username"
                aria-describedby="button-addon2" placeholder="Produto">
     </div>
-
 </form>
 <br>
 

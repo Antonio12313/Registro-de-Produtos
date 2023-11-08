@@ -30,7 +30,7 @@ class ProdController extends Controller
         $second_last = $total_no_of_pages - 1;
         $produtos = $produtoRepository->getProdutos($offset, $total_records_per_page, $params);
 
-        include_once "indexbkp.php";;
+        include_once "indexbkp.php";
     }
 
     public function edit($id, $params)
@@ -109,7 +109,6 @@ class ProdController extends Controller
                 $authenticator->notification($mensagem);
                 Navigation::navigateToBack();
             }else{
-                echo $total;
                 $produtoRepository->storeMovimentacao($idProdutoMovimentacao,$quantidade,$tipoMovimentacao);
                 $mensagem = "Sua movimentação foi cadastrado com sucesso!";
                 $authenticator->notification($mensagem);
