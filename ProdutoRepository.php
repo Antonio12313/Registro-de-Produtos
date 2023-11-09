@@ -202,6 +202,8 @@ class ProdutoRepository
 
     function storeVendas($nomeCliente,$idProduto,$dataVenda,$quantidadeVenda,$statusVenda)
     {
+        var_dump($idProduto);
+
         $produtoRepository = new ProdutoRepository();
         $conn = $this->conn->getConnection();
         $currentDateTime = new DateTime('now');

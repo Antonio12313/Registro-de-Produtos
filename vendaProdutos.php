@@ -37,15 +37,15 @@ $produtoRepository->showMessage();
     </div>
     <div class="input-group mb-3 " style="width: 26%; padding: 10px;">
         <select class="form-select" name="status_venda" aria-label="Default select example">
-            <option selected value="0">Status da Venda</option>
+            <option selected value="0">Selecione um Status</option>
             <option value="<?php echo StatusVendaEnum::Finalizado; ?>">Finalizado</option>
             <option value="<?php echo StatusVendaEnum::Pendente; ?>">Pendente</option>
         </select>
     </div>
     <div class="row g-2" id="gerar-campos" style="display: flex; flex-flow: row;">
-        <div class="input-group mb-3" style="width: 26%; padding: 10px;">
-            <select class="form-select" name="produto" aria-label="Default select example">
-                <option selected value="0">Produto</option>
+        <div class="input-group mb-3" id="produtos" style="width: 26%; padding: 10px;">
+            <select class="form-select" name="produto[<?php echo uniqid();?>][nome]" id="produtor" aria-label="Default select example">
+                <option selected value="0">Escolha Um Produto</option>
                 <?php
 
                 foreach ($produtos['dados'] as $produto) {
@@ -55,29 +55,40 @@ $produtoRepository->showMessage();
                 ?>
             </select>
         </div>
+
         <div class="input-group mb-1 " style="width: 26%; padding: 10px;">
-            <input name="quantidade_venda" type="number" step=any id="quantidade_venda" class="form-control"
+            <input name="produto[<?php echo uniqid();?>][quantidade]" type="number" step=any id="quantidade_venda" class="form-control"
                    aria-label="Recipient's username"
                    aria-describedby="button-addon2" placeholder="Quantidade">
-
         </div>
         <div class="input-group mb-1">
             <div class="input-group-append" style="margin-left: 10px;">
-                <button type="button" onclick="gerarCampo()" class="btn btn-outline-dark" id="newRow"
-                        style="height: 35.27px;">+
+                <button type="button" onclick="validator()" class="btn btn-outline-dark" id="newRow"
+                        style="height: 35.27px;margin-top:9px;">+
                 </button>
-            </div>
-            <div class="input-group-append" style="margin-left: 10px; ">
-                <button id="removeRow" type="button" class="btn btn-danger" style="height: 35.27px;">Remove</button>
             </div>
         </div>
 
     </div>
+    <div class="adiciona"></div>
 
-    <div class="row g-3">
-    <div class="gerar-aqui  " >
+    <div class="row">
+        <div class="mb-4">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <td>Produto</td>
+                        <td>Quantidade</td>
+                        <td>Ações</td>
+                    </tr>
+                </thead>
+                <tbody id="items-content">
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-    </div></div>
+
     <input type="submit" class="btn btn-outline-secondary" id="button-addon2" value="Enviar"
            style="width: 9%; margin-left: 5px;">
 </form>
@@ -88,22 +99,51 @@ $produtoRepository->showMessage();
 </body>
 
 <script>
-    function gerarCampo() {
+    function validator(){
+        var select = document.getElementById('produtor');
+        var produtoId = select.options[select.selectedIndex].value;
+        var quantidade = document.getElementById('quantidade_venda').value;
+        if(produtoId > 0 &&  quantidade > 0  ){
+            adicionar();
+        }
+    }
+
+    function adicionar() {
+
         var n = Math.floor(Math.random() * 11);
         var k = Math.floor(Math.random() * 1000000);
         var uniqid = n + k;
 
-        console.log(uniqid)
+        var select = document.getElementById('produtor');
+        var produtoId = select.options[select.selectedIndex].value;
+        var descricaoProduto = select.options[select.selectedIndex].innerText;
+        var quantidade = document.getElementById('quantidade_venda').value;
 
-        let div = "<div id='gerar" + uniqid + "'> </div>";
 
-        let divPai = document.querySelector('#gerar-campos').innerHTML
-        let gerar = document.querySelector('.gerar-aqui');
-        gerar.innerHTML += div;
+        var linha = "<tr id="+uniqid+" >";
+        linha += "    <td>";
+        linha += "        " + descricaoProduto;
+        linha += "        <input type='hidden' name='itens["+uniqid+"][produto_id]' value='"+produtoId+"'>";
+        linha += "    </td>";
+        linha += "    <td>";
+        linha += "        " + quantidade;
+        linha += "        <input type='hidden' name='itens["+uniqid+"][quantidade]' value='"+quantidade+"'>";
+        linha += "    </td>";
+        linha += "    <td>";
+        linha += "        <button id='removeRow' data-antonio='"+uniqid+"' onclick='remover(this)' type='button' class='btn btn-danger' style='height: 35.27px;'>Remover</button>";
+        linha += "    </td>";
+        linha += "</tr>";
 
-        document.querySelector('#gerar'+uniqid).innerHTML = divPai
+        let container = document.getElementById('items-content');
+        container.insertAdjacentHTML('beforeend', linha);
+    }
 
+    function remover(elemento){
+        var  id =  elemento.getAttribute('data-antonio');
+        var  select = document.getElementById(id);
+        select.remove();
     }
 
 </script>
+
 </html>
