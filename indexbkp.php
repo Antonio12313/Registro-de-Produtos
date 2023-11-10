@@ -22,7 +22,9 @@ include_once 'controllers/ConfigSite.php';
 </style>
 <section>
     <form class="row g-2" action="<?php echo ConfigSite::$ROOT; ?>/prod/" method="post" style="">
-        <h2 class="col-auto" style="margin-right: 715px;">Inventário</h2>
+        <div class="col-auto">
+            <h2 class="col-auto" style="margin-right: 36rem;">Inventário</h2>
+        </div>
         <div class="col-auto">
             <label for="nome" class="visually-hidden">Produto</label>
             <input type="text" class="form-control" placeholder="Pesquise o produto" aria-label="First name"

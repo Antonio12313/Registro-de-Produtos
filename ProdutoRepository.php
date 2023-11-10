@@ -62,39 +62,38 @@ class ProdutoRepository
         ];
     }
 
-    function getProduto($id): array
+    public function getPedidos(): array
     {
+
         $conn = $this->conn->getConnection();
-        $sql = "SELECT  p.id, 
-                        p.nome,
-                        sum(case when m.tipo_produto = 1 then m.quantidade else 0 end) - sum(case when m.tipo_produto = 2 then m.quantidade else 0 end) as estoque,
-                        u.name,
-                        p.created_at,
-                        p.updated_at 
-                FROM produtos as p
-                INNER JOIN users as u
-                    on p.user_id = u.id
-                    LEFT JOIN movimentacao_produtos as m
-                        on  p.id = m.produto_id
-                    WHERE p.deleted_at is null
-                AND p.id = '$id'";
-        $result = $conn->query($sql);
-        $produto = [];
+        $sql = "SELECT vp.id, v.cod_venda, v.cliente,p.nome,vp.quantidade_venda, v.status_venda, v.data_venda,vp.venda_id
+                    FROM venda_produtos as vp
+                        JOIN vendas as v
+                            on vp.venda_id = v.id
+                        join produtos as p
+                            on vp.prod_id = p.id
+                    where v.deleted_at is null
+                    GROUP BY v.id";
+
+        $result = $this->conn->getConnection()->query($sql);
+        $pedido = [];
 
         if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            $produto = [
-                "id" => $row["id"],
-                "nome" => $row["nome"],
-                "estoque" => $row["estoque"],
-                "name" => $row["name"],
-                "created_at" => $row["created_at"],
-                "updated_at" => $row["updated_at"]
-            ];
+            while ($row = mysqli_fetch_array($result)) {
+                $pedido[] = [
+                    "venda_id" => $row["venda_id"],
+                    "cod_venda" => $row["cod_venda"],
+                    "cliente"=> $row['cliente'],
+                    "nome" => $row["nome"],
+                    "quantidade_venda" => $row["quantidade_venda"],
+                    "status_venda" => $row["status_venda"],
+                    "data_venda" => $row["data_venda"]
+                ];
+            }
+
         }
         $conn->close();
-
-        return $produto;
+        return ['pedidos' => $pedido];
     }
 
     function getControleProduto(): array
@@ -134,6 +133,30 @@ class ProdutoRepository
         }
         $conn->close();
         return true;
+    }
+    public function getProdutoPedido($id){
+        $conn = $this->conn->getConnection();
+
+        $sql = "SELECT vp.id, p.nome,vp.quantidade_venda, vp.venda_id
+                FROM venda_produtos as vp
+                    JOIN vendas as v
+                        on vp.venda_id = v.id
+                    join produtos as p
+                        on vp.prod_id = p.id
+                where v.deleted_at is null
+                AND v.id = '$id' ";
+        $result = $this->conn->getConnection()->query($sql);
+        $dados = [];
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+                $dados = [
+                    "nome" => $row["nome"],
+                    "quantidade_venda" => $row["quantidade_venda"],
+                    "venda_id"=> $row["venda_id"]
+                ];
+            }
+        $conn->close();
+        return $dados;
     }
 
     function getUserID($email)
@@ -216,7 +239,18 @@ class ProdutoRepository
         $conn->close();
     }
 
-    function storeCliente($nomeCliente,$dataVenda,$statusVenda,$uniqid){
+    function storeMovimentacao($id, $quantidade, $tipoMovimentacao)
+    {
+        $conn = $this->conn->getConnection();
+        $currentDateTime = new DateTime('now');
+        $currentDate = $currentDateTime->format('Y-m-d H:i:s');
+        $sql = "INSERT INTO movimentacao_produtos (quantidade,tipo_produto,produto_id,created_at ,updated_at) VALUES('$quantidade','$tipoMovimentacao',(SELECT id FROM produtos WHERE id= '$id'),'$currentDate','$currentDate')";
+        $conn->query($sql);
+        $conn->close();
+    }
+
+    function storeCliente($nomeCliente, $dataVenda, $statusVenda, $uniqid)
+    {
 
 
         $conn = $this->conn->getConnection();
@@ -227,16 +261,6 @@ class ProdutoRepository
         $conn->query($sql);
         $conn->close();
 
-    }
-
-    function storeMovimentacao($id, $quantidade, $tipoMovimentacao)
-    {
-        $conn = $this->conn->getConnection();
-        $currentDateTime = new DateTime('now');
-        $currentDate = $currentDateTime->format('Y-m-d H:i:s');
-        $sql = "INSERT INTO movimentacao_produtos (quantidade,tipo_produto,produto_id,created_at ,updated_at) VALUES('$quantidade','$tipoMovimentacao',(SELECT id FROM produtos WHERE id= '$id'),'$currentDate','$currentDate')";
-        $conn->query($sql);
-        $conn->close();
     }
 
     function paginacao($total_records_per_page)
@@ -306,7 +330,7 @@ class ProdutoRepository
         return $numeroFormatado;
     }
 
-    public function stockValidator($itens):bool
+    public function stockValidator($itens): bool
     {
         $produtoRepository = new ProdutoRepository();
 
@@ -318,7 +342,7 @@ class ProdutoRepository
             if ($total <= 0) {
                 $validator = false;
                 return $validator;
-            }else {
+            } else {
                 $total = 0;
                 $validator = true;
             }
@@ -326,11 +350,47 @@ class ProdutoRepository
         return $validator;
     }
 
-    public function getUniqId():string{
+    function getProduto($id): array
+    {
+        $conn = $this->conn->getConnection();
+        $sql = "SELECT  p.id, 
+                        p.nome,
+                        sum(case when m.tipo_produto = 1 then m.quantidade else 0 end) - sum(case when m.tipo_produto = 2 then m.quantidade else 0 end) as estoque,
+                        u.name,
+                        p.created_at,
+                        p.updated_at 
+                FROM produtos as p
+                INNER JOIN users as u
+                    on p.user_id = u.id
+                    LEFT JOIN movimentacao_produtos as m
+                        on  p.id = m.produto_id
+                    WHERE p.deleted_at is null
+                AND p.id = '$id'";
+        $result = $conn->query($sql);
+        $produto = [];
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $produto = [
+                "id" => $row["id"],
+                "nome" => $row["nome"],
+                "estoque" => $row["estoque"],
+                "name" => $row["name"],
+                "created_at" => $row["created_at"],
+                "updated_at" => $row["updated_at"]
+            ];
+        }
+        $conn->close();
+
+        return $produto;
+    }
+
+    public function getUniqId(): string
+    {
         $prefix = "COD";
         $unique = substr(uniqid(rand(), true), 0, 5); // 16 characters long
-        $cod = $prefix.$unique;
-        return $cod ;
+        $cod = $prefix . $unique;
+        return $cod;
     }
 
 

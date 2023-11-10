@@ -12,6 +12,10 @@
 <?php
 include_once 'view/Navbar.html';
 include_once 'controllers/ConfigSite.php';
+include_once 'controllers/StatusVendaEnum.php';
+$produtoRepository = new ProdutoRepository();
+$pedidos = $produtoRepository->getPedidos();
+$produtoRepository->showMessage();
 ?>
 <br>
 
@@ -30,15 +34,17 @@ include_once 'controllers/ConfigSite.php';
             </thead>
             <tbody>
             <?php
-            foreach ($produtos['dados'] as $produto) {
+            foreach ($pedidos['pedidos'] as $pedido) {
                 ?>
                 <tr style="font-size: 1rem;">
-                    <td><strong> <?php echo $produto["id"]; ?></strong></td>
-                    <td><?php echo $produto["nome"]; ?></td>
-                    <td><?php echo $produtorepository->numberFormat($produto["estoque"]); ?></td>
-                    <td><?php echo $produto["name"]; ?></td>
-                    <td><?php echo $produto["created_at"] ?></td>
-                    <td><?php echo $produto["updated_at"] ?></td>
+                    <td><strong> <?php echo $pedido["cod_venda"]; ?></strong></td>
+                    <td><?php echo $pedido["cliente"]; ?></td>
+                    <td><?php echo $pedido["data_venda"]; ?></td>
+                    <td><?php if ($pedido["status_venda"] == 1) {
+                            echo 'Pendente';
+                        } elseif ($pedido["status_venda"] == 2) {
+                            echo "Finalizado";
+                        }; ?></td>
                     <td>
                         <style>
                             .btn.btn-outline-success:hover {
@@ -52,13 +58,10 @@ include_once 'controllers/ConfigSite.php';
                                 color: white;
                             }
                         </style>
-                        <a href="<?php echo ConfigSite::$ROOT; ?>/prod/edit/<?php echo $produto["id"]; ?>"
-                           class="btn btn-outline-success" style="border-color: #739072;" tabindex="-1" role="button"
-                           aria-disabled="true">Editar</a>
-                        <a href="<?php echo ConfigSite::$ROOT; ?>/prod/delete/<?php echo $produto["id"]; ?>"
+                        <a href="<?php echo ConfigSite::$ROOT; ?>/pedido/<?php echo $pedido["id"]; ?>"
                            type="button"
                            class="btn btn-outline-danger btn-delete">
-                            Deletar
+                            +
                         </a>
                     </td>
                 </tr>
@@ -70,8 +73,65 @@ include_once 'controllers/ConfigSite.php';
     </div>
 </form>
 </section>
+<br>
+<div class="modal" id="exampleCentralModal1" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content text-center">
+            <div class="modal-header bg-dark text-white d-flex justify-content-center">
+                <h5 class="modal-title" id="exampleModalLabel" style="font-size: 1.8rem;">Pedido</h5>
+            </div>
+            <div class="modal-body">
+                <div class="table-reponsive">
+                    <table class="table table-light table-striped" style="text-align: center">
+                        <thead class="table" style="background-color: rgba(51,45,45);">
+                        <tr style="color: white;font-size: 1rem;">
+                            <td>Produto</td>
+                            <td>Quantidade ☼</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="font-size: 1rem;">
+                                <td><strong> <?php $prod = $produtoRepository->getProdutoPedido($pedido['venda_id']);
+                                        echo $prod['nome']; ?></strong></td>
+                                <td><?php echo $pedido["quantidade_venda"]; ?></td>
+                            </tr>
+                        </tbody>
 
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-end">
+                <input type="hidden" id="btn-confirm-delete" class="btn btn-outline-danger" data-bs-dismiss="modal">
+                <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 <?php include_once "JavaScript/script.html"; ?>
+<script>
+    document.addEventListener("DOMContentLoaded", function (event) {
+        var buttons = document.getElementsByClassName('btn-delete');
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].onclick = function (event) {
+                event.preventDefault();
+                openDeleteConfirmationDialog(event.target.href);
+            }
+        }
+    });
+
+    function openDeleteConfirmationDialog(href) {
+        document.getElementById("btn-confirm-delete").onclick = function () {
+            window.location = href
+        };
+
+        var myModal = new bootstrap.Modal(document.getElementById('exampleCentralModal1'), {
+            keyboard: true
+        });
+        myModal.show();
+    }
+
+</script>
 
 </html>
