@@ -190,6 +190,45 @@ class ProdutoRepository
         $conn->close();
     }
 
+    function storeVendas($nomeCliente, $idProduto, $quantidadeVenda)
+    {
+
+        $produtoRepository = new ProdutoRepository();
+        $conn = $this->conn->getConnection();
+        $conn->begin_transaction();
+        $currentDateTime = new DateTime('now');
+        $currentDate = $currentDateTime->format('Y-m-d H:i:s');
+
+        $sql2 = "INSERT INTO venda_produtos (prod_id,quantidade_venda,venda_id,created_at ,updated_at) 
+                    VALUES((SELECT id FROM produtos WHERE id= '$idProduto'),'$quantidadeVenda',(SELECT id FROM vendas WHERE cliente = '$nomeCliente' AND created_at = '$currentDate'),'$currentDate','$currentDate')";
+        $conn->query($sql2);
+
+        if ($conn->connect_error) {
+            $conn->rollback();
+            die("Connection failed: " . $conn->connect_error);
+            return false;
+        } else {
+            $produtoRepository->storeMovimentacao($idProduto, $quantidadeVenda, 2);
+            $conn->commit();
+            return true;
+        }
+
+        $conn->close();
+    }
+
+    function storeCliente($nomeCliente,$dataVenda,$statusVenda,$uniqid){
+
+
+        $conn = $this->conn->getConnection();
+        $currentDateTime = new DateTime('now');
+        $currentDate = $currentDateTime->format('Y-m-d H:i:s');
+
+        $sql = "INSERT INTO vendas (cliente,cod_venda,data_venda,status_venda,created_at ,updated_at) VALUES('$nomeCliente','$uniqid','$dataVenda','$statusVenda','$currentDate','$currentDate')";
+        $conn->query($sql);
+        $conn->close();
+
+    }
+
     function storeMovimentacao($id, $quantidade, $tipoMovimentacao)
     {
         $conn = $this->conn->getConnection();
@@ -198,24 +237,6 @@ class ProdutoRepository
         $sql = "INSERT INTO movimentacao_produtos (quantidade,tipo_produto,produto_id,created_at ,updated_at) VALUES('$quantidade','$tipoMovimentacao',(SELECT id FROM produtos WHERE id= '$id'),'$currentDate','$currentDate')";
         $conn->query($sql);
         $conn->close();
-    }
-
-    function storeVendas($nomeCliente,$idProduto,$dataVenda,$quantidadeVenda,$statusVenda)
-    {
-        var_dump($idProduto);
-
-        $produtoRepository = new ProdutoRepository();
-        $conn = $this->conn->getConnection();
-        $currentDateTime = new DateTime('now');
-        $currentDate = $currentDateTime->format('Y-m-d H:i:s');
-        $sql = "INSERT INTO venda_produtos (nome_cliente,prod_id,quantidade_venda,data_venda,status_venda,created_at ,updated_at) VALUES('$nomeCliente',(SELECT id FROM produtos WHERE id= '$idProduto'),'$quantidadeVenda','$dataVenda','$statusVenda','$currentDate','$currentDate')";
-        if($sql == true){
-            $conn->query($sql);
-            $produtoRepository->storeMovimentacao($idProduto,$quantidadeVenda,2);
-            $conn->close();
-        }
-
-
     }
 
     function paginacao($total_records_per_page)
@@ -284,5 +305,33 @@ class ProdutoRepository
         $numeroFormatado = number_format($numero, 2, ',', '');
         return $numeroFormatado;
     }
+
+    public function stockValidator($itens):bool
+    {
+        $produtoRepository = new ProdutoRepository();
+
+        foreach ($itens as $chave => $item) {
+            $idProduto = $item["produto_id"];
+            $quantidadeVenda = $item['quantidade'];
+            $quantidadeEstoque = $produtoRepository->getProduto($idProduto);
+            $total = $quantidadeEstoque['estoque'] - $quantidadeVenda;
+            if ($total <= 0) {
+                $validator = false;
+                return $validator;
+            }else {
+                $total = 0;
+                $validator = true;
+            }
+        }
+        return $validator;
+    }
+
+    public function getUniqId():string{
+        $prefix = "COD";
+        $unique = substr(uniqid(rand(), true), 0, 5); // 16 characters long
+        $cod = $prefix.$unique;
+        return $cod ;
+    }
+
 
 }

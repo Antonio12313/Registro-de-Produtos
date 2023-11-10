@@ -89,8 +89,8 @@ $produtoRepository->showMessage();
     </div>
 
 
-    <input type="submit" class="btn btn-outline-secondary" id="button-addon2" value="Enviar"
-           style="width: 9%; margin-left: 5px;">
+    <input type="submit" class="btn btn-outline-secondary"  value="Enviar"
+           style="width: 100px; margin-left: 5px;">
 </form>
 <br>
 

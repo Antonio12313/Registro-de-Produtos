@@ -16,35 +16,36 @@ class VendasController extends Controller
         $produtoRepository = new ProdutoRepository();
         $authenticator = new Authenticator();
 
-
+        $codVenda = uniqid();
         if (isset($params["itens"]) && isset($params["nome_cliente"])) {
             $nomeCliente = $params['nome_cliente'];
             $itens = $params['itens'];
-            foreach ($itens as $chave => $item) {
-                $idProduto = $item["produto_id"];
-                $quantidadeVenda = $item['quantidade'];
-                var_dump($idProduto);
-                $dataVenda = $params['data_venda'];
-                $statusVenda = $params['status_venda'];
-                $quantidadeEstoque = $produtoRepository->getProduto($idProduto);
-                $total = $quantidadeEstoque['estoque'] - $quantidadeVenda;
-                if ($total <= 0) {
-                    $mensagem = "Impossivel realizar esta ação, Verifique se o produto está em estoque para poder realizar a venda!";
+            $dataVenda = $params['data_venda'];
+            $statusVenda = $params['status_venda'];
+
+            $validator = $produtoRepository->stockValidator($itens);
+            if ($validator) {
+                $uniqid = $produtoRepository->getUniqId();
+                $produtoRepository->storeCliente($nomeCliente, $dataVenda, $statusVenda,$uniqid);
+                foreach ($itens as $chave => $item) {
+                    $idProduto = $item["produto_id"];
+                    $quantidadeVenda = $item['quantidade'];
+                    $produtoRepository->storeVendas($nomeCliente, $idProduto, $quantidadeVenda);
+                }   $mensagem = "Sua venda foi realizada com sucesso!";
                     $authenticator->notification($mensagem);
-                    Navigation::navigateToBack();
-                }else {
-                    $total = 0;
-                    $produtoRepository->storeVendas($nomeCliente, $idProduto, $dataVenda, $quantidadeVenda, $statusVenda);
-                    $mensagem = "Sua venda foi realizada com sucesso!";
-                    $authenticator->notification($mensagem);
-                    Navigation::navigateTo("prod");
-                }
-            } exit;
+                    Navigation::navigateTo('prod');
+
+            }else {
+                $mensagem = "Impossivel realizar esta ação, Verifique se o produto está em estoque para poder realizar a venda!";
+                $authenticator->notification($mensagem);
+                Navigation::navigateToBack();
+            }
+
         }
-
-
 
         include_once 'vendaProdutos.php';
     }
 
+
 }
+
