@@ -44,7 +44,8 @@ $produtoRepository->showMessage();
     </div>
     <div class="row g-2" id="gerar-campos" style="display: flex; flex-flow: row;">
         <div class="input-group mb-3" id="produtos" style="width: 26%; padding: 10px;">
-            <select class="form-select" name="produto[<?php echo uniqid();?>][nome]" id="produtor" aria-label="Default select example">
+            <select class="form-select" name="produto[<?php echo uniqid(); ?>][nome]" id="produtor"
+                    aria-label="Default select example">
                 <option selected value="0">Escolha Um Produto</option>
                 <?php
 
@@ -57,7 +58,8 @@ $produtoRepository->showMessage();
         </div>
 
         <div class="input-group mb-1 " style="width: 26%; padding: 10px;">
-            <input name="produto[<?php echo uniqid();?>][quantidade]" type="number" step=any id="quantidade_venda" class="form-control"
+            <input name="produto[<?php echo uniqid(); ?>][quantidade]" type="number" step=any id="quantidade_venda"
+                   class="form-control"
                    aria-label="Recipient's username"
                    aria-describedby="button-addon2" placeholder="Quantidade">
         </div>
@@ -76,11 +78,11 @@ $produtoRepository->showMessage();
         <div class="mb-4">
             <table class="table">
                 <thead>
-                    <tr>
-                        <td>Produto</td>
-                        <td>Quantidade</td>
-                        <td>Ações</td>
-                    </tr>
+                <tr>
+                    <td>Produto</td>
+                    <td>Quantidade</td>
+                    <td>Ações</td>
+                </tr>
                 </thead>
                 <tbody id="items-content">
                 </tbody>
@@ -89,7 +91,7 @@ $produtoRepository->showMessage();
     </div>
 
 
-    <input type="submit" class="btn btn-outline-secondary"  value="Enviar"
+    <input type="submit" class="btn btn-outline-secondary" value="Enviar"
            style="width: 100px; margin-left: 5px;">
 </form>
 <br>
@@ -99,11 +101,11 @@ $produtoRepository->showMessage();
 </body>
 
 <script>
-    function validator(){
+    function validator() {
         var select = document.getElementById('produtor');
         var produtoId = select.options[select.selectedIndex].value;
         var quantidade = document.getElementById('quantidade_venda').value;
-        if(produtoId > 0 &&  quantidade > 0  ){
+        if (produtoId > 0 && quantidade > 0) {
             adicionar();
         }
     }
@@ -120,17 +122,17 @@ $produtoRepository->showMessage();
         var quantidade = document.getElementById('quantidade_venda').value;
 
 
-        var linha = "<tr id="+uniqid+" >";
+        var linha = "<tr id=" + uniqid + " >";
         linha += "    <td>";
         linha += "        " + descricaoProduto;
-        linha += "        <input type='hidden' name='itens["+uniqid+"][produto_id]' value='"+produtoId+"'>";
+        linha += "        <input type='hidden' name='itens[" + uniqid + "][produto_id]' value='" + produtoId + "'>";
         linha += "    </td>";
         linha += "    <td>";
         linha += "        " + quantidade;
-        linha += "        <input type='hidden' name='itens["+uniqid+"][quantidade]' value='"+quantidade+"'>";
+        linha += "        <input type='hidden' name='itens[" + uniqid + "][quantidade]' value='" + quantidade + "'>";
         linha += "    </td>";
         linha += "    <td>";
-        linha += "        <button id='removeRow' data-antonio='"+uniqid+"' onclick='remover(this)' type='button' class='btn btn-danger' style='height: 35.27px;'>Remover</button>";
+        linha += "        <button id='removeRow' data-antonio='" + uniqid + "' onclick='remover(this)' type='button' class='btn btn-danger' style='height: 35.27px;'>Remover</button>";
         linha += "    </td>";
         linha += "</tr>";
 
@@ -138,9 +140,9 @@ $produtoRepository->showMessage();
         container.insertAdjacentHTML('beforeend', linha);
     }
 
-    function remover(elemento){
-        var  id =  elemento.getAttribute('data-antonio');
-        var  select = document.getElementById(id);
+    function remover(elemento) {
+        var id = elemento.getAttribute('data-antonio');
+        var select = document.getElementById(id);
         select.remove();
     }
 

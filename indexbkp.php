@@ -52,58 +52,59 @@ $produtorepository->showMessage();
 <section>
     <form action="<?php echo ConfigSite::$ROOT; ?>prod/" method="post" class="row g-2">
         <div class="table-reponsive">
-        <table class="table table-bordered table-striped" style="text-align: center">
-            <thead class="table" style="background-color: #739072">
+            <table class="table table-bordered table-striped" style="text-align: center">
+                <thead class="table" style="background-color: #739072">
 
-            <tr style="color: white;font-size: 1rem;">
-                <td>Id</td>
-                <td>Produtos ☼</td>
-                <td>Quantidade Em Estoque</td>
-                <td>Usuário</td>
-                <td>Foi criado em</td>
-                <td>Ultima Modificação</td>
-                <td>Opções</td>
-            </tr>
-            </thead>
-            <tbody>
-            <?php
-            foreach ($produtos['dados'] as $produto) {
-                ?>
-                <tr style="font-size: 1rem;">
-                    <td><strong> <?php echo $produto["id"]; ?></strong></td>
-                    <td><?php echo $produto["nome"]; ?></td>
-                    <td><?php echo $produtorepository->numberFormat($produto["estoque"]); ?></td>
-                    <td><?php echo $produto["name"]; ?></td>
-                    <td><?php echo $produto["created_at"] ?></td>
-                    <td><?php echo $produto["updated_at"] ?></td>
-                    <td>
-                        <style>
-                            .btn.btn-outline-success:hover {
-                                background-color: #739072;
-                                color: white;
-
-                            }
-
-                            .btn.btn-outline-danger:hover {
-                                background-color: rgb(220, 76, 100);
-                                color: white;
-                            }
-                        </style>
-                        <a href="<?php echo ConfigSite::$ROOT; ?>/prod/edit/<?php echo $produto["id"]; ?>"
-                           class="btn btn-outline-success" style="border-color: #739072;" tabindex="-1" role="button"
-                           aria-disabled="true">Editar</a>
-                        <a href="<?php echo ConfigSite::$ROOT; ?>/prod/delete/<?php echo $produto["id"]; ?>"
-                           type="button"
-                           class="btn btn-outline-danger btn-delete">
-                            Deletar
-                        </a>
-                    </td>
+                <tr style="color: white;font-size: 1rem;">
+                    <td>Id</td>
+                    <td>Produtos ☼</td>
+                    <td>Quantidade Em Estoque</td>
+                    <td>Usuário</td>
+                    <td>Foi criado em</td>
+                    <td>Ultima Modificação</td>
+                    <td>Opções</td>
                 </tr>
+                </thead>
+                <tbody>
                 <?php
-            }
-            ?>
-            </tbody>
-        </table>
+                foreach ($produtos['dados'] as $produto) {
+                    ?>
+                    <tr style="font-size: 1rem;">
+                        <td><strong> <?php echo $produto["id"]; ?></strong></td>
+                        <td><?php echo $produto["nome"]; ?></td>
+                        <td><?php echo $produtorepository->numberFormat($produto["estoque"]); ?></td>
+                        <td><?php echo $produto["name"]; ?></td>
+                        <td><?php echo $produto["created_at"] ?></td>
+                        <td><?php echo $produto["updated_at"] ?></td>
+                        <td>
+                            <style>
+                                .btn.btn-outline-success:hover {
+                                    background-color: #739072;
+                                    color: white;
+
+                                }
+
+                                .btn.btn-outline-danger:hover {
+                                    background-color: rgb(220, 76, 100);
+                                    color: white;
+                                }
+                            </style>
+                            <a href="<?php echo ConfigSite::$ROOT; ?>/prod/edit/<?php echo $produto["id"]; ?>"
+                               class="btn btn-outline-success" style="border-color: #739072;" tabindex="-1"
+                               role="button"
+                               aria-disabled="true">Editar</a>
+                            <a href="<?php echo ConfigSite::$ROOT; ?>/prod/delete/<?php echo $produto["id"]; ?>"
+                               type="button"
+                               class="btn btn-outline-danger btn-delete">
+                                Deletar
+                            </a>
+                        </td>
+                    </tr>
+                    <?php
+                }
+                ?>
+                </tbody>
+            </table>
         </div>
     </form>
 </section>

@@ -66,7 +66,14 @@ class ProdutoRepository
     {
 
         $conn = $this->conn->getConnection();
-        $sql = "SELECT vp.id, v.cod_venda, v.cliente,p.nome,vp.quantidade_venda, v.status_venda, v.data_venda,vp.venda_id
+        $sql = "SELECT  vp.id, 
+                        v.cod_venda, 
+                        v.cliente,
+                        p.nome,
+                        vp.quantidade_venda, 
+                        v.status_venda, 
+                        date_format(v.data_venda, '%d/%m/%Y') as data_venda,
+                        vp.venda_id
                     FROM venda_produtos as vp
                         JOIN vendas as v
                             on vp.venda_id = v.id
@@ -83,7 +90,7 @@ class ProdutoRepository
                 $pedido[] = [
                     "venda_id" => $row["venda_id"],
                     "cod_venda" => $row["cod_venda"],
-                    "cliente"=> $row['cliente'],
+                    "cliente" => $row['cliente'],
                     "nome" => $row["nome"],
                     "quantidade_venda" => $row["quantidade_venda"],
                     "status_venda" => $row["status_venda"],
@@ -134,30 +141,6 @@ class ProdutoRepository
         $conn->close();
         return true;
     }
-    public function getProdutoPedido($id){
-        $conn = $this->conn->getConnection();
-
-        $sql = "SELECT vp.id, p.nome,vp.quantidade_venda, vp.venda_id
-                FROM venda_produtos as vp
-                    JOIN vendas as v
-                        on vp.venda_id = v.id
-                    join produtos as p
-                        on vp.prod_id = p.id
-                where v.deleted_at is null
-                AND v.id = '$id' ";
-        $result = $this->conn->getConnection()->query($sql);
-        $dados = [];
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-                $dados = [
-                    "nome" => $row["nome"],
-                    "quantidade_venda" => $row["quantidade_venda"],
-                    "venda_id"=> $row["venda_id"]
-                ];
-            }
-        $conn->close();
-        return $dados;
-    }
 
     function getUserID($email)
     {
@@ -175,6 +158,32 @@ class ProdutoRepository
         }
         $conn->close();
         return $produto;
+    }
+
+    public function getProdutoPedido($id)
+    {
+        $conn = $this->conn->getConnection();
+
+        $sql = "SELECT vp.id, p.nome,vp.quantidade_venda, vp.venda_id
+                FROM venda_produtos as vp
+                    JOIN vendas as v
+                        on vp.venda_id = v.id
+                    join produtos as p
+                        on vp.prod_id = p.id
+                where v.deleted_at is null
+                AND v.id = '$id' ";
+        $result = $this->conn->getConnection()->query($sql);
+        $dados = [];
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $dados = [
+                "nome" => $row["nome"],
+                "quantidade_venda" => $row["quantidade_venda"],
+                "venda_id" => $row["venda_id"]
+            ];
+        }
+        $conn->close();
+        return $dados;
     }
 
     function deleteProduto($id)
@@ -392,6 +401,8 @@ class ProdutoRepository
         $cod = $prefix . $unique;
         return $cod;
     }
+
+
 
 
 }

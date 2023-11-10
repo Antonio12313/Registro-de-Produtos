@@ -13,6 +13,8 @@
 include_once 'view/Navbar.html';
 include_once 'controllers/ConfigSite.php';
 include_once 'controllers/StatusVendaEnum.php';
+
+
 $produtoRepository = new ProdutoRepository();
 $pedidos = $produtoRepository->getPedidos();
 $produtoRepository->showMessage();
@@ -58,11 +60,9 @@ $produtoRepository->showMessage();
                                 color: white;
                             }
                         </style>
-                        <a href="<?php echo ConfigSite::$ROOT; ?>/pedido/<?php echo $pedido["id"]; ?>"
-                           type="button"
-                           class="btn btn-outline-danger btn-delete">
-                            +
-                        </a>
+                        <button id="<?php echo $pedido["venda_id"]; ?>" onclick="showCustomer(this.id)"
+                                type="button" class="btn btn-outline-danger btn-delete"> +
+                        </button>
                     </td>
                 </tr>
                 <?php
@@ -74,12 +74,14 @@ $produtoRepository->showMessage();
 </form>
 </section>
 <br>
+
+
 <div class="modal" id="exampleCentralModal1" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content text-center">
             <div class="modal-header bg-dark text-white d-flex justify-content-center">
-                <h5 class="modal-title" id="exampleModalLabel" style="font-size: 1.8rem;">Pedido</h5>
+                <h5 class="modal-title" id="exampleModalLabel" style="font-size: 1.8rem;">Itens Solicitados</h5>
             </div>
             <div class="modal-body">
                 <div class="table-reponsive">
@@ -91,11 +93,11 @@ $produtoRepository->showMessage();
                         </tr>
                         </thead>
                         <tbody>
-                            <tr style="font-size: 1rem;">
-                                <td><strong> <?php $prod = $produtoRepository->getProdutoPedido($pedido['venda_id']);
-                                        echo $prod['nome']; ?></strong></td>
-                                <td><?php echo $pedido["quantidade_venda"]; ?></td>
-                            </tr>
+                        <tr style="font-size: 1rem;">
+                            <div id="aqui">
+
+                            </div>
+                        </tr>
                         </tbody>
 
                     </table>
@@ -108,7 +110,11 @@ $produtoRepository->showMessage();
         </div>
     </div>
 </div>
+
+
 </body>
+
+
 <?php include_once "JavaScript/script.html"; ?>
 <script>
     document.addEventListener("DOMContentLoaded", function (event) {
@@ -130,6 +136,26 @@ $produtoRepository->showMessage();
             keyboard: true
         });
         myModal.show();
+    }
+
+    function getId(id) {
+        var idpedido = document.getElementById(id);
+
+        console.log(idpedido);
+
+    }
+
+    function showCustomer(str) {
+        if (str === "") {
+            document.getElementById("aqui").innerHTML = "";
+            return;
+        }
+        const xhttp = new XMLHttpRequest();
+        xhttp.onclick = function () {
+            document.getElementById("aqui").innerHTML = this.responseText;
+        }
+        xhttp.open("GET", "http://localhost/cadastro-produtos/produtosPedidos.php?q=" + str);
+        xhttp.send();
     }
 
 </script>

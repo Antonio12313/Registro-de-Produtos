@@ -35,14 +35,15 @@ $produtoRepository->showMessage();
         </select>
     </div>
     <div class="input-group mb-3 " style="width: 26%; padding: 10px;">
-        <input name="quantidade" type="number" step=any id="quantidade" class="form-control" aria-label="Recipient's username"
+        <input name="quantidade" type="number" step=any id="quantidade" class="form-control"
+               aria-label="Recipient's username"
                aria-describedby="button-addon2" placeholder="Quantidade">
     </div>
     <div class="input-group mb-3 " style="width: 26%; padding: 10px;">
         <select class="form-select" name="tipo_movimentacao" aria-label="Default select example">
-            <option selected value="0">Tipo de Movimentação</option>
+            <option selected value="0">Escolha Uma Opção</option>
             <option value="<?php echo EstoqueEnum::Entrada; ?>">Entrada</option>
-            <option value="<?php echo EstoqueEnum::Saida; ?>">Saida</option>
+            <option value="<?php echo EstoqueEnum::Saida; ?>">Saída</option>
         </select>
         <input type="submit" class="btn btn-outline-secondary" id="button-addon2" value="Enviar">
     </div>
