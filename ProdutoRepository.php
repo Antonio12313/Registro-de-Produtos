@@ -62,7 +62,7 @@ class ProdutoRepository
         ];
     }
 
-    public function getPedidos(): array
+    public function getPedidos(int $offset, int $total_records_per_page): array
     {
 
         $conn = $this->conn->getConnection();
@@ -79,9 +79,8 @@ class ProdutoRepository
                             on vp.venda_id = v.id
                         join produtos as p
                             on vp.prod_id = p.id
-                    where v.deleted_at is null
-                    GROUP BY v.id";
-
+                    where v.deleted_at is null";
+        $sql .= " GROUP BY v.id LIMIT " . $offset . ' , ' . $total_records_per_page;
         $result = $this->conn->getConnection()->query($sql);
         $pedido = [];
 
@@ -281,6 +280,19 @@ class ProdutoRepository
     {
         $conn = $this->conn->getConnection();
         $sql = "SELECT COUNT(*) As total_records  FROM produtos";
+        $result = $conn->query($sql);
+
+        $total_records = mysqli_fetch_array($result);
+        $total_records = $total_records['total_records'];
+        $total_no_of_pages = ceil($total_records / $total_records_per_page);
+
+        $conn->close();
+        return $total_no_of_pages;
+    }
+    function paginacaoPedido($total_records_per_page)
+    {
+        $conn = $this->conn->getConnection();
+        $sql = "SELECT COUNT(*) As total_records  FROM vendas";
         $result = $conn->query($sql);
 
         $total_records = mysqli_fetch_array($result);

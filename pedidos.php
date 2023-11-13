@@ -16,7 +16,7 @@ include_once 'controllers/StatusVendaEnum.php';
 
 
 $produtoRepository = new ProdutoRepository();
-$pedidos = $produtoRepository->getPedidos();
+
 $produtoRepository->showMessage();
 ?>
 <br>
@@ -73,6 +73,15 @@ $produtoRepository->showMessage();
     </div>
 </form>
 </section>
+<form action="<?php echo ConfigSite::$ROOT; ?>/pedido" method="post">
+    <div class="center" style="text-align: center;">
+
+            <strong>Página <?php echo $page_no . " de " . $total_no_of_pages; ?></strong><?php
+            include_once 'paginacao-estrutura.php';
+         ?>
+    </div>
+</form>
+
 <br>
 
 
