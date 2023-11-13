@@ -174,16 +174,21 @@ class ProdutoRepository
                 AND v.id = '$id' ";
         $result = $this->conn->getConnection()->query($sql);
         $dados = [];
+
         if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            $dados = [
-                "nome" => $row["nome"],
-                "quantidade_venda" => $row["quantidade_venda"],
-                "venda_id" => $row["venda_id"]
-            ];
+            while ($row = mysqli_fetch_array($result)) {
+                $dados[] = [
+                    "nome" => $row["nome"],
+                    "quantidade_venda" => $row["quantidade_venda"],
+                    "venda_id" => $row["venda_id"]
+                ];
+            }
         }
         $conn->close();
-        return $dados;
+        return [
+            'dados' => $dados];
+
+
     }
 
     function deleteProduto($id)

@@ -60,8 +60,8 @@ $produtoRepository->showMessage();
                                 color: white;
                             }
                         </style>
-                        <button id="<?php echo $pedido["venda_id"]; ?>" onclick="showCustomer(this.id)"
-                                type="button" class="btn btn-outline-danger btn-delete"> +
+                        <button id="teste" onclick="showCustomer(this.value)" value="<?php echo $pedido["venda_id"]; ?>"
+                                type="button" class="btn btn-outline-dark btn-dark"> +
                         </button>
                     </td>
                 </tr>
@@ -92,12 +92,10 @@ $produtoRepository->showMessage();
                             <td>Quantidade ☼</td>
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr style="font-size: 1rem;">
-                            <div id="aqui">
+                        <tbody id="aqui">
 
-                            </div>
-                        </tr>
+
+
                         </tbody>
 
                     </table>
@@ -118,10 +116,11 @@ $produtoRepository->showMessage();
 <?php include_once "JavaScript/script.html"; ?>
 <script>
     document.addEventListener("DOMContentLoaded", function (event) {
-        var buttons = document.getElementsByClassName('btn-delete');
+        var buttons = document.getElementsByClassName('btn-dark');
         for (var i = 0; i < buttons.length; i++) {
             buttons[i].onclick = function (event) {
                 event.preventDefault();
+                showCustomer(event.target.value);
                 openDeleteConfirmationDialog(event.target.href);
             }
         }
@@ -138,24 +137,18 @@ $produtoRepository->showMessage();
         myModal.show();
     }
 
-    function getId(id) {
-        var idpedido = document.getElementById(id);
-
-        console.log(idpedido);
-
-    }
-
     function showCustomer(str) {
-        if (str === "") {
+        if (str == "") {
             document.getElementById("aqui").innerHTML = "";
             return;
         }
         const xhttp = new XMLHttpRequest();
-        xhttp.onclick = function () {
+        xhttp.onload = function () {
             document.getElementById("aqui").innerHTML = this.responseText;
         }
-        xhttp.open("GET", "http://localhost/cadastro-produtos/produtosPedidos.php?q=" + str);
+        xhttp.open("GET", "http://localhost/cadastro-produtos/pedido/produtos?q=" + str);
         xhttp.send();
+
     }
 
 </script>
