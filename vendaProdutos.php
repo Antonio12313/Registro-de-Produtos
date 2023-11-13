@@ -63,6 +63,12 @@ $produtoRepository->showMessage();
                    aria-label="Recipient's username"
                    aria-describedby="button-addon2" placeholder="Quantidade">
         </div>
+        <div class="input-group mb-1 " style="width: 26%; padding: 10px;">
+            <input name="produto[<?php echo uniqid(); ?>][valor]" type="number" step=any id="valor"
+                   class="form-control"
+                   aria-label="Recipient's username"
+                   aria-describedby="button-addon2" placeholder="Valor">
+        </div>
         <div class="input-group mb-1">
             <div class="input-group-append" style="margin-left: 10px;">
                 <button type="button" onclick="validator()" class="btn btn-outline-dark" id="newRow"
@@ -81,6 +87,7 @@ $produtoRepository->showMessage();
                 <tr>
                     <td>Produto</td>
                     <td>Quantidade</td>
+                    <td>Valor</td>
                     <td>Ações</td>
                 </tr>
                 </thead>
@@ -105,7 +112,9 @@ $produtoRepository->showMessage();
         var select = document.getElementById('produtor');
         var produtoId = select.options[select.selectedIndex].value;
         var quantidade = document.getElementById('quantidade_venda').value;
-        if (produtoId > 0 && quantidade > 0) {
+        var valor = document.getElementById('valor').value;
+
+        if (produtoId > 0 && quantidade > 0 && valor > 0) {
             adicionar();
         }
     }
@@ -120,6 +129,7 @@ $produtoRepository->showMessage();
         var produtoId = select.options[select.selectedIndex].value;
         var descricaoProduto = select.options[select.selectedIndex].innerText;
         var quantidade = document.getElementById('quantidade_venda').value;
+        var valor = document.getElementById('valor').value;
 
 
         var linha = "<tr id=" + uniqid + " >";
@@ -130,6 +140,10 @@ $produtoRepository->showMessage();
         linha += "    <td>";
         linha += "        " + quantidade;
         linha += "        <input type='hidden' name='itens[" + uniqid + "][quantidade]' value='" + quantidade + "'>";
+        linha += "    </td>";
+        linha += "    <td>";
+        linha += "        " + valor;
+        linha += "        <input type='hidden' name='itens[" + uniqid + "][valor]' value='" + valor + "'>";
         linha += "    </td>";
         linha += "    <td>";
         linha += "        <button id='removeRow' data-antonio='" + uniqid + "' onclick='remover(this)' type='button' class='btn btn-danger' style='height: 35.27px;'>Remover</button>";

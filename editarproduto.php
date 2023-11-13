@@ -29,7 +29,7 @@ $id = $url[2];
     <div class="input-group mb-3 " style="width: 25%; padding: 10px;">
         <input type="text" class="form-control" name="nome" value="<?php echo $produto["nome"]; ?>"
                aria-label="Recipient's username" aria-describedby="button-addon2">
-        <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Atualizar</button>
+        <button class="btn btn-outline-secondary" type="submit" id="button-addon2" style="color: black;">Atualizar</button>
     </div>
 
 

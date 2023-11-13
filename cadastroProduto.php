@@ -23,6 +23,7 @@ include_once 'controllers/EstoqueEnum.php';
     <div class="input-group mb-3 " style="width: 25%; padding: 10px;">
         <input name="nome" type="text" id="nome" class="form-control" aria-label="Recipient's username"
                aria-describedby="button-addon2" placeholder="Produto">
+        <button class="btn btn-outline-secondary" type="submit" id="button-addon2" style="color: black;border:1px solid black;">Enviar</button>
     </div>
 </form>
 <br>

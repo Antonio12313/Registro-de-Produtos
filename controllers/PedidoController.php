@@ -37,10 +37,12 @@ class PedidoController extends Controller
     public function produtos($params){
         $produtoRepository = new ProdutoRepository();
         $produtos = $produtoRepository->getProdutoPedido($params['q']);
-
+         $valor_total =  0;
         foreach ($produtos['dados'] as $produto) {
-            echo "<tr style='font-size: 1rem;'><td><strong>".$produto['nome']."</strong></td>\n<td>".$produto["quantidade_venda"]."</td></tr>";
+            echo "<tr style='font-size: 1rem;'><td><strong>".$produto['nome']."</strong></td>\n<td>".$produto["quantidade_venda"]."</td><td>$".$produto["valor"]."</td></tr>";
+            $valor_total += $produto["valor"];
         }
+        echo "<tr><td></td><td></td><td><strong>Total:&nbsp;</strong>$".number_format((float)$valor_total, 2, ',', '')."</td></tr><tr></tr>";
 
     }
 

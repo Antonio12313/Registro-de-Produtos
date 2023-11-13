@@ -99,13 +99,14 @@ $produtoRepository->showMessage();
                         <tr style="color: white;font-size: 1rem;">
                             <td>Produto</td>
                             <td>Quantidade ☼</td>
+                            <td>Valor</td>
                         </tr>
                         </thead>
                         <tbody id="aqui">
 
-
-
+                        </tfoot>
                         </tbody>
+
 
                     </table>
                 </div>
@@ -122,7 +123,7 @@ $produtoRepository->showMessage();
 </body>
 
 
-<?php include_once "JavaScript/script.html"; ?>
+<?php include_once "JavaScript/script.html";?>
 <script>
     document.addEventListener("DOMContentLoaded", function (event) {
         var buttons = document.getElementsByClassName('btn-dark');
@@ -157,7 +158,6 @@ $produtoRepository->showMessage();
         }
         xhttp.open("GET", "http://localhost/cadastro-produtos/pedido/produtos?q=" + str);
         xhttp.send();
-
     }
 
 </script>

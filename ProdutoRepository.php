@@ -163,14 +163,18 @@ class ProdutoRepository
     {
         $conn = $this->conn->getConnection();
 
-        $sql = "SELECT vp.id, p.nome,vp.quantidade_venda, vp.venda_id
+        $sql = "SELECT vp.id, 
+                        p.nome,
+                        vp.quantidade_venda, 
+                        vp.venda_id,
+                        vp.valor
                 FROM venda_produtos as vp
                     JOIN vendas as v
                         on vp.venda_id = v.id
                     join produtos as p
                         on vp.prod_id = p.id
                 where v.deleted_at is null
-                AND v.id = '$id' ";
+                AND v.id = '$id'";
         $result = $this->conn->getConnection()->query($sql);
         $dados = [];
 
@@ -179,6 +183,7 @@ class ProdutoRepository
                 $dados[] = [
                     "nome" => $row["nome"],
                     "quantidade_venda" => $row["quantidade_venda"],
+                    "valor" =>$row["valor"],
                     "venda_id" => $row["venda_id"]
                 ];
             }
@@ -226,7 +231,7 @@ class ProdutoRepository
         $conn->close();
     }
 
-    function storeVendas($nomeCliente, $idProduto, $quantidadeVenda)
+    function storeVendas($nomeCliente, $idProduto, $quantidadeVenda, $valor)
     {
 
         $produtoRepository = new ProdutoRepository();
@@ -235,8 +240,7 @@ class ProdutoRepository
         $currentDateTime = new DateTime('now');
         $currentDate = $currentDateTime->format('Y-m-d H:i:s');
 
-        $sql2 = "INSERT INTO venda_produtos (prod_id,quantidade_venda,venda_id,created_at ,updated_at) 
-                    VALUES((SELECT id FROM produtos WHERE id= '$idProduto'),'$quantidadeVenda',(SELECT id FROM vendas WHERE cliente = '$nomeCliente' AND created_at = '$currentDate'),'$currentDate','$currentDate')";
+        $sql2 = "INSERT INTO venda_produtos (prod_id,quantidade_venda,valor,venda_id,created_at ,updated_at) VALUES((SELECT id FROM produtos WHERE id= '$idProduto'),'$quantidadeVenda','$valor',(SELECT id FROM vendas WHERE cliente = '$nomeCliente' AND created_at = '$currentDate'),'$currentDate','$currentDate')";
         $conn->query($sql2);
 
         if ($conn->connect_error) {
@@ -289,6 +293,7 @@ class ProdutoRepository
         $conn->close();
         return $total_no_of_pages;
     }
+
     function paginacaoPedido($total_records_per_page)
     {
         $conn = $this->conn->getConnection();
@@ -418,8 +423,6 @@ class ProdutoRepository
         $cod = $prefix . $unique;
         return $cod;
     }
-
-
 
 
 }

@@ -21,6 +21,7 @@ class VendasController extends Controller
             $nomeCliente = $params['nome_cliente'];
             $itens = $params['itens'];
             $dataVenda = $params['data_venda'];
+
             $statusVenda = $params['status_venda'];
 
             $validator = $produtoRepository->stockValidator($itens);
@@ -30,7 +31,8 @@ class VendasController extends Controller
                 foreach ($itens as $chave => $item) {
                     $idProduto = $item["produto_id"];
                     $quantidadeVenda = $item['quantidade'];
-                    $produtoRepository->storeVendas($nomeCliente, $idProduto, $quantidadeVenda);
+                    $valor = $item['valor'];
+                    $produtoRepository->storeVendas($nomeCliente, $idProduto, $quantidadeVenda,$valor);
                 }   $mensagem = "Sua venda foi realizada com sucesso!";
                     $authenticator->notification($mensagem);
                     Navigation::navigateTo('prod');
