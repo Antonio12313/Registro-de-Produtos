@@ -63,6 +63,7 @@ $produtoRepository->showMessage();
                         <button id="teste" onclick="showCustomer(this.value)" value="<?php echo $pedido["venda_id"]; ?>"
                                 type="button" class="btn btn-outline-dark btn-dark"> +
                         </button>
+
                     </td>
                 </tr>
                 <?php
@@ -104,15 +105,12 @@ $produtoRepository->showMessage();
                         </thead>
                         <tbody id="aqui">
 
-                        </tfoot>
                         </tbody>
-
-
                     </table>
                 </div>
             </div>
             <div class="modal-footer d-flex justify-content-end">
-                <input type="hidden" id="btn-confirm-delete" class="btn btn-outline-danger" data-bs-dismiss="modal">
+                <input type="hidden" id="btn-confirm-delete" class="btn btn-outline-danger" data-bs-dismiss="modal" value="Deletar" style="color: black;">
                 <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Fechar</button>
             </div>
         </div>
@@ -159,6 +157,7 @@ $produtoRepository->showMessage();
         xhttp.open("GET", "http://localhost/cadastro-produtos/pedido/produtos?q=" + str);
         xhttp.send();
     }
+
 
 </script>
 

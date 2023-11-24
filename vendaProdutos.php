@@ -42,6 +42,7 @@ $produtoRepository->showMessage();
             <option value="<?php echo StatusVendaEnum::Pendente; ?>">Pendente</option>
         </select>
     </div>
+    <div style="margin: 10px"><p ><strong>Selecione os produtos a serem vendidos:</strong></p></div>
     <div class="row g-2" id="gerar-campos" style="display: flex; flex-flow: row;">
         <div class="input-group mb-3" id="produtos" style="width: 26%; padding: 10px;">
             <select class="form-select" name="produto[<?php echo uniqid(); ?>][nome]" id="produtor"
@@ -78,6 +79,7 @@ $produtoRepository->showMessage();
         </div>
 
     </div>
+
     <div class="adiciona"></div>
 
     <div class="row">
